@@ -10,11 +10,13 @@
 #                                                                              #
 # **************************************************************************** #
 
-philo/a.out
-philo/main.c
-philo/.DS_Store
-philo/*.o
-philo/*.a
-philo/*.dSYM
-philo/dbg*
-philo/*.dSYM
+a.out
+main.c
+.DS_Store
+*.o
+*.a
+*.dSYM
+dbg*
+*.dSYM
+
+philo

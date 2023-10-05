@@ -14,7 +14,10 @@
 
 int	main(int argc, char **argv)
 {
-	(void)argv;
-	(void)argc;
+	if (read_args(argc, argv))
+	{
+		write(2, "invalid args\n", 13);
+		return (1);
+	}
 	return (0);
 }

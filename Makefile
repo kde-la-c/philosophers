@@ -12,7 +12,9 @@
 
 NAME		= philo
 NAME_DBG	= dbg
-SRC			= philo.c
+SRC			= philo.c \
+			input.c \
+			utils.c
 OBJS		= $(SRC:%.c=%.o)
 INCLUDE		= philo.h
 CC			= gcc

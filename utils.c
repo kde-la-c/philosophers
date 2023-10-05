@@ -1,29 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.h                                            :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kde-la-c <kde-la-c@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/03 19:09:44 by kde-la-c          #+#    #+#             */
-/*   Updated: 2023/10/03 19:09:47 by kde-la-c         ###   ########.fr       */
+/*   Created: 2023/10/05 18:59:32 by kde-la-c          #+#    #+#             */
+/*   Updated: 2023/10/05 18:59:33 by kde-la-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_H
-# define PHILO_H
+#include "philo.h"
 
-# include <string.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include <sys/time.h>
-# include <pthread.h>
-
-// read args
-int	read_args(int argc, char **argv);
-
-// utils
-int	ft_isdigit(int c);
-
-#endif
+int	ft_isdigit(int c)
+{
+	if (c >= 48 && c <= 57)
+		return (1);
+	return (0);
+}
