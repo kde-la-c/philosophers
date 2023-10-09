@@ -14,10 +14,21 @@
 
 int	main(int argc, char **argv)
 {
+	int	i;
+	int	*args;
+
+	i = 0;
+	args = (int *)malloc(sizeof(int) * argc);
 	if (read_args(argc, argv))
 	{
 		write(2, "invalid args\n", 13);
 		return (1);
 	}
+	while (++i < argc)
+	{
+		args[i - 1] = ft_atoi(argv[i]);
+	}
+	args[i - 1] = -1;
+	spawner(args);	
 	return (0);
 }
