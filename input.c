@@ -23,6 +23,7 @@ int	read_args(int argc, char **argv)
 		return (-1);
 	while (argv[i])
 	{
+		j = 0;
 		while (argv[i][j])
 			if (!ft_isdigit(argv[i][j++]))
 				return (-2);

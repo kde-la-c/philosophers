@@ -22,6 +22,7 @@ int	main(int argc, char **argv)
 	if (read_args(argc, argv))
 	{
 		write(2, "invalid args\n", 13);
+		free(args);
 		return (1);
 	}
 	while (++i < argc)

@@ -12,27 +12,16 @@
 
 #include "philo.h"
 
-int towrite = 0;
-
-void	*routine(void *mutex)
+void	*routine(void *cutlery)
 {
-	pthread_mutex_t	lock;
-
-	lock = *(pthread_mutex_t *)mutex;
-	for (int i = 0; i < 1000000; i++)
-	{
-		pthread_mutex_lock(&lock);
-		towrite++;
-		pthread_mutex_unlock(&lock);
-	}
+	(void)cutlery;
+	printf("hey\n");
 	return (NULL);
 }
 
-int	spawn(pthread_mutex_t mutex)
+int	spawn(pthread_t tid, pthread_mutex_t *cutlery)
 {
-	pthread_t	tid;
-
-	if (pthread_create(&tid, NULL, routine, &mutex))
+	if (pthread_create(&tid, NULL, routine, cutlery))
 		return (1);
 	if (pthread_join(tid, NULL))
 		return (2);
@@ -41,16 +30,21 @@ int	spawn(pthread_mutex_t mutex)
 
 int	spawner(int *args)
 {
-	int				i = 0;
-	pthread_mutex_t	mutex;
+	int				i;
+	pthread_t		*tids;
+	pthread_mutex_t	*cutlery;
+	(void)args;
 
-	pthread_mutex_init(&mutex, NULL);
-	while (i++ < args[0])
+	i = 0;
+	tids = (pthread_t *)malloc(sizeof(pthread_t) * args[0]);
+	cutlery = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * args[0]);
+	while (i < args[0])
 	{
-		if (spawn(mutex))
-			return (1);
+		pthread_mutex_init(&(cutlery[i]), NULL);
+		spawn(tids[i], cutlery);
+		i++;
 	}
-	pthread_mutex_destroy(&mutex);
-	printf("towrite = %i\n", towrite);
+	free(tids);
+	free(cutlery);
 	return (0);
 }
