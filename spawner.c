@@ -12,11 +12,45 @@
 
 #include "philo.h"
 
+int towrite = 0;
+
+void	*routine(void *mutex)
+{
+	pthread_mutex_t	lock;
+
+	lock = *(pthread_mutex_t *)mutex;
+	for (int i = 0; i < 1000000; i++)
+	{
+		pthread_mutex_lock(&lock);
+		towrite++;
+		pthread_mutex_unlock(&lock);
+	}
+	return (NULL);
+}
+
+int	spawn(pthread_mutex_t mutex)
+{
+	pthread_t	tid;
+
+	if (pthread_create(&tid, NULL, routine, &mutex))
+		return (1);
+	if (pthread_join(tid, NULL))
+		return (2);
+	return (0);
+}
+
 int	spawner(int *args)
 {
-	int	i = 0;
+	int				i = 0;
+	pthread_mutex_t	mutex;
 
-	while (args[i] != -1)
-		printf("-> %i\n", args[i++]);
-	return (i);
+	pthread_mutex_init(&mutex, NULL);
+	while (i++ < args[0])
+	{
+		if (spawn(mutex))
+			return (1);
+	}
+	pthread_mutex_destroy(&mutex);
+	printf("towrite = %i\n", towrite);
+	return (0);
 }
