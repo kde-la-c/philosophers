@@ -18,5 +18,6 @@ main.c
 *.dSYM
 dbg*
 *.dSYM
+test*
 
 philo

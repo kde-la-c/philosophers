@@ -14,22 +14,31 @@
 
 void	*routine(void *data)
 {
-	struct timeval	tv;
-
-	printf("phid? %i\n", ((int *)data)[0]);
-	gettimeofday(&tv, NULL);
-	// printf(">%ld, %ld\n", tv.tv_sec, tv.tv_usec);
-	printf(">%ld, %ld\n", tv.tv_sec - ((long int *)data)[1], tv.tv_usec - ((long int *)data)[2]);
+	print_tstamp(((long *)data)[1], ((long *)data)[2]);
+	usleep(((int **)data)[3][2] * 1000);
+	usleep(((int **)data)[3][3] * 1000);
 	return (NULL);
+}
+
+int	despawn(int nbphilos, pthread_t *tids, pthread_mutex_t *cutlery)
+{
+	int	i;
+
+	i = 0;
+	while (i < nbphilos)
+	{
+		if (pthread_join(tids[i], NULL))
+			return (1);
+		if (pthread_mutex_destroy(&cutlery[i++]))
+			return (2);
+	}
+	return (0);
 }
 
 int	spawn(pthread_t tid, t_data data)
 {
-	usleep(100000);
 	if (pthread_create(&tid, NULL, routine, &data))
 		return (1);
-	if (pthread_join(tid, NULL))
-		return (2);
 	return (0);
 }
 
@@ -45,7 +54,6 @@ int	spawner(int *args)
 	tids = (pthread_t *)malloc(sizeof(pthread_t) * args[0]);
 	data.cutlery = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * args[0]);
 	gettimeofday(&tv, NULL);
-	printf("deb %ld, %ld\n", tv.tv_sec, tv.tv_usec);
 	data.stsec = tv.tv_sec;
 	data.stusec = tv.tv_usec;
 	while (i < args[0])
@@ -55,8 +63,8 @@ int	spawner(int *args)
 		spawn(tids[i], data);
 		i++;
 	}
+	despawn(args[0], tids, data.cutlery);
 	gettimeofday(&tv, NULL);
-	printf("fin %ld, %ld\n", tv.tv_sec, tv.tv_usec);
 	free(tids);
 	free(data.cutlery);
 	return (0);

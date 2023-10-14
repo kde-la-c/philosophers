@@ -23,8 +23,8 @@
 typedef struct s_data
 {
 	int				phid;
-	long int		stsec;
-	long int		stusec;
+	long			stsec;
+	long			stusec;
 	int				*args; // 0 = nbphilos, 1 = ttdie, 2 = tteat, 3 = ttsleep, 5 = nbboucles
 	pthread_mutex_t	*cutlery;
 }	t_data;
@@ -34,6 +34,9 @@ int	read_args(int argc, char **argv);
 
 // spawner
 int	spawner(int *args);
+
+// output
+void	print_tstamp(long stsec, long stusec);
 
 // utils
 int	ft_isdigit(int c);
