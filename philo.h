@@ -20,6 +20,15 @@
 # include <sys/time.h>
 # include <pthread.h>
 
+typedef struct s_data
+{
+	int				phid;
+	long int		stsec;
+	long int		stusec;
+	int				*args; // 0 = nbphilos, 1 = ttdie, 2 = tteat, 3 = ttsleep, 5 = nbboucles
+	pthread_mutex_t	*cutlery;
+}	t_data;
+
 // read args
 int	read_args(int argc, char **argv);
 
