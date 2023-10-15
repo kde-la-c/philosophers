@@ -32,12 +32,17 @@ $(NAME):	$(OBJS) $(INCLUDE)
 			@echo "\033[0;32m--- $(NAME) compiled successfully! ---\033[0m"
 
 l:			$(OBJS) $(INCLUDE)
-			$(CC) $(CFLAGS) -fsanitize=leak -g3 $(OBJS) -o $(NAME)
+			$(CC) $(CFLAGS) -g3 -fsanitize=leak $(OBJS) -o $(NAME)
 			$(RM) $(RFLAGS) $(OBJS)
 			@echo "\033[0;32m--- $(NAME) compiled successfully! ---\033[0m"
 
 m:			$(OBJS) $(INCLUDE)
-			$(CC) $(CFLAGS) -fsanitize=address -g3 $(OBJS) -o $(NAME)
+			$(CC) $(CFLAGS) -g3 -fsanitize=address $(OBJS) -o $(NAME)
+			$(RM) $(RFLAGS) $(OBJS)
+			@echo "\033[0;32m--- $(NAME) compiled successfully! ---\033[0m"
+
+t:			$(OBJS) $(INCLUDE)
+			$(CC) $(CFLAGS) -g3 -fsanitize=thread $(OBJS) -o $(NAME)
 			$(RM) $(RFLAGS) $(OBJS)
 			@echo "\033[0;32m--- $(NAME) compiled successfully! ---\033[0m"
 
