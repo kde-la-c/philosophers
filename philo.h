@@ -29,6 +29,12 @@ typedef struct s_data
 	pthread_mutex_t	*cutlery;
 }	t_data;
 
+typedef struct s_arg
+{
+	int		phid;
+	void	*data;
+}	t_arg;
+
 // read args
 int	read_args(int argc, char **argv);
 
