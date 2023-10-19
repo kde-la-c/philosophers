@@ -12,22 +12,23 @@
 
 #include "philo.h"
 
-// pthread_mutex_t	mutex;
+///TODO ensure t_data structure is well allocated before being passed to spawn()
 
 void	*routine(void *arg)
 {
-	static int	i = 0;
-	t_data data = ((t_data *)arg)[1];
+	// int		phid;
+	t_data	data;
 
-	///TODO change arg variables to data[] variables
-	pthread_mutex_lock(&(((pthread_mutex_t **)arg)[4])[0]);
-	// pthread_mutex_lock(&mutex);
-	printf("phid %i\n", i++);
-	print_tstamp(((long *)arg)[1], ((long *)arg)[2]);
-	// usleep(((int **)arg)[3][2] * 1000);
-	// usleep(((int **)arg)[3][3] * 1000);
-	pthread_mutex_unlock(&(((pthread_mutex_t **)arg)[4])[0]);
-	// pthread_mutex_unlock(&mutex);
+	// phid = ((int *)arg)[0];
+	data = ((t_data *)arg)[1];
+	// pthread_mutex_lock(&(((pthread_mutex_t **)arg)[4])[0]);
+	// pthread_mutex_lock(&data.cutlery[phid]);
+	printf("phid %i\n", ((int *)arg)[0]);
+	print_tstamp(data.stsec, data.stusec);
+	usleep(data.args[1] * 1000);
+	usleep(data.args[2] * 1000);
+	// pthread_mutex_unlock(&(((pthread_mutex_t **)arg)[4])[0]);
+	// pthread_mutex_unlock(&data.cutlery[phid]);
 	return (NULL);
 }
 
@@ -38,7 +39,7 @@ int	despawn(int nbphilos, pthread_t *tids, pthread_mutex_t *cutlery)
 	i = 0;
 	while (i < nbphilos)
 	{
-		if (pthread_join(tids[i], NULL))
+		if (pthread_detach(tids[i]))
 			return (1);
 		if (pthread_mutex_destroy(&cutlery[i++]))
 			return (2);
@@ -69,7 +70,6 @@ int	spawner(int *args)
 	gettimeofday(&tv, NULL);
 	data.stsec = tv.tv_sec;
 	data.stusec = tv.tv_usec;
-	// pthread_mutex_init(&mutex, NULL);
 	while (i < args[0])
 	{
 		arg[i].data = &data;
@@ -78,7 +78,6 @@ int	spawner(int *args)
 		spawn(tids[i], arg[i]);
 		i++;
 	}
-	// pthread_mutex_destroy(&mutex);
 	despawn(args[0], tids, data.cutlery);
 	free(tids);
 	free(data.cutlery);
