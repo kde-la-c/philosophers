@@ -12,44 +12,48 @@
 
 #include "philo.h"
 
-///TODO ensure t_data structure is well allocated before being passed to spawn()
+///NOTE error on thread creation, reference is lost
 
 void	*routine(void *arg)
 {
-	// int		phid;
+	int		phid;
 	t_data	data;
 
-	// phid = ((int *)arg)[0];
+	phid = ((int *)arg)[0];
 	data = ((t_data *)arg)[1];
-	// pthread_mutex_lock(&(((pthread_mutex_t **)arg)[4])[0]);
-	// pthread_mutex_lock(&data.cutlery[phid]);
-	printf("phid %i\n", ((int *)arg)[0]);
-	print_tstamp(data.stsec, data.stusec);
-	usleep(data.args[1] * 1000);
-	usleep(data.args[2] * 1000);
-	// pthread_mutex_unlock(&(((pthread_mutex_t **)arg)[4])[0]);
-	// pthread_mutex_unlock(&data.cutlery[phid]);
+	usleep(phid * 1000);
+	pthread_mutex_lock(&data.cutlery);
+	usleep(10000);
+	printf("->%p\n", &data.cutlery);
+	pthread_mutex_unlock(&data.cutlery);
 	return (NULL);
 }
 
 int	despawn(int nbphilos, pthread_t *tids, pthread_mutex_t *cutlery)
 {
 	int	i;
+	int	j;
+	(void)cutlery;
 
 	i = 0;
 	while (i < nbphilos)
 	{
-		if (pthread_detach(tids[i]))
-			return (1);
-		if (pthread_mutex_destroy(&cutlery[i++]))
-			return (2);
+		j = pthread_join(tids[i], NULL);
+		if (j)
+		{
+			printf(">%i\n", j);
+			perror("hey");
+			exit(1);
+		}
+		// if (pthread_mutex_destroy(&cutlery[i++]))
+		// 	return (2);
 	}
 	return (0);
 }
 
-int	spawn(pthread_t tid, t_arg arg)
+int	spawn(pthread_t *tid, t_arg arg)
 {
-	if (pthread_create(&tid, NULL, routine, &arg))
+	if (pthread_create(&(*tid), NULL, routine, &arg))
 		return (1);
 	return (0);
 }
@@ -66,7 +70,8 @@ int	spawner(int *args)
 	arg = malloc(sizeof(t_arg) * args[0]);
 	data.args = args;
 	tids = (pthread_t *)malloc(sizeof(pthread_t) * args[0]);
-	data.cutlery = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * args[0]);
+	// data.cutlery = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * args[0]);
+	pthread_mutex_init(&data.cutlery, NULL);
 	gettimeofday(&tv, NULL);
 	data.stsec = tv.tv_sec;
 	data.stusec = tv.tv_usec;
@@ -74,12 +79,15 @@ int	spawner(int *args)
 	{
 		arg[i].data = &data;
 		arg[i].phid = i;
-		pthread_mutex_init(&(data.cutlery[i]), NULL);
-		spawn(tids[i], arg[i]);
+		// pthread_mutex_init(&(data.cutlery[i]), NULL);
+		spawn(&tids[i], arg[i]);
 		i++;
 	}
-	despawn(args[0], tids, data.cutlery);
+	despawn(args[0], tids, NULL);
+	if (pthread_mutex_destroy(&data.cutlery))
+		return (2);
 	free(tids);
-	free(data.cutlery);
+	free(arg);
+	// free(data.cutlery);
 	return (0);
 }

@@ -26,7 +26,8 @@ typedef struct s_data
 	long			stsec;
 	long			stusec;
 	int				*args; // 0 = nbphilos, 1 = ttdie, 2 = tteat, 3 = ttsleep, 5 = nbboucles
-	pthread_mutex_t	*cutlery;
+	// pthread_mutex_t	*cutlery;
+	pthread_mutex_t	cutlery;
 }	t_data;
 
 typedef struct s_arg
