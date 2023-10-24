@@ -3,91 +3,85 @@
 /*                                                        :::      ::::::::   */
 /*   spawner.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kde-la-c <kde-la-c@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: kde-la-c <kde-la-c@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/09 23:21:53 by kde-la-c          #+#    #+#             */
-/*   Updated: 2023/10/09 23:21:55 by kde-la-c         ###   ########.fr       */
+/*   Created: 2023/10/24 22:10:12 by kde-la-c          #+#    #+#             */
+/*   Updated: 2023/10/24 22:10:16 by kde-la-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-///NOTE error on thread creation, reference is lost
+// pthread_mutex_t	mutex;
+
+typedef struct s_struct
+{
+	int				inutil;
+	pthread_t		tid1;
+	pthread_t		tid2;
+	pthread_mutex_t	*mutex;
+}	t_struct;
 
 void	*routine(void *arg)
 {
-	int		phid;
-	t_data	data;
+	// pthread_mutex_t	mutex;
+	(void)arg;
 
-	phid = ((int *)arg)[0];
-	data = ((t_data *)arg)[1];
-	usleep(phid * 1000);
-	pthread_mutex_lock(&data.cutlery);
-	usleep(10000);
-	printf("->%p\n", &data.cutlery);
-	pthread_mutex_unlock(&data.cutlery);
+	// mutex = ((pthread_mutex_t *)arg)[3];
+	pthread_mutex_lock(((pthread_mutex_t **)arg)[3]);
+	usleep(100000);
+	printf("HOLA!\n");
+	usleep(100000);
+	printf("QUE\n");
+	usleep(100000);
+	printf("TAL?\n");
+	pthread_mutex_unlock(((pthread_mutex_t **)arg)[3]);
 	return (NULL);
 }
 
-int	despawn(int nbphilos, pthread_t *tids, pthread_mutex_t *cutlery)
+int	spawn(t_struct *estruct, int i)
 {
-	int	i;
-	int	j;
-	(void)cutlery;
-
-	i = 0;
-	while (i < nbphilos)
+	if (!i && pthread_create(&(*estruct).tid1, NULL, routine, (void *)estruct))
 	{
-		j = pthread_join(tids[i], NULL);
-		if (j)
-		{
-			printf(">%i\n", j);
-			perror("hey");
-			exit(1);
-		}
-		// if (pthread_mutex_destroy(&cutlery[i++]))
-		// 	return (2);
+		perror("eta m**rda");
+		return (-1);
+	}
+	else if (i && pthread_create(&(*estruct).tid2, NULL, routine, (void *)estruct))
+	{
+		perror("eta otra m**rda");
+		return (-1);
 	}
 	return (0);
 }
 
-int	spawn(pthread_t *tid, t_arg arg)
+int	despawn(t_struct *estruct, int i)
 {
-	if (pthread_create(&(*tid), NULL, routine, &arg))
-		return (1);
+	int	j;
+
+	if (!i)
+		j = pthread_join((*estruct).tid1, NULL);
+	else
+		j = pthread_join((*estruct).tid2, NULL);
+	if (j)
+	{
+		printf("j :%i\n", j);
+		perror("eta otra weba");
+		return (-1);
+	}
 	return (0);
 }
 
 int	spawner(int *args)
 {
-	int				i;
-	t_data			data;
-	struct timeval	tv;
-	pthread_t		*tids;
-	t_arg			*arg;
+	t_struct	estruct;
+	(void)args;
 
-	i = 0;
-	arg = malloc(sizeof(t_arg) * args[0]);
-	data.args = args;
-	tids = (pthread_t *)malloc(sizeof(pthread_t) * args[0]);
-	// data.cutlery = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * args[0]);
-	pthread_mutex_init(&data.cutlery, NULL);
-	gettimeofday(&tv, NULL);
-	data.stsec = tv.tv_sec;
-	data.stusec = tv.tv_usec;
-	while (i < args[0])
-	{
-		arg[i].data = &data;
-		arg[i].phid = i;
-		// pthread_mutex_init(&(data.cutlery[i]), NULL);
-		spawn(&tids[i], arg[i]);
-		i++;
-	}
-	despawn(args[0], tids, NULL);
-	if (pthread_mutex_destroy(&data.cutlery))
-		return (2);
-	free(tids);
-	free(arg);
-	// free(data.cutlery);
-	return (0);
+	estruct.inutil = 0;
+	pthread_mutex_init(estruct.mutex, NULL);
+	spawn(&estruct, 0);
+	spawn(&estruct, 1);
+	despawn(&estruct, 0);
+	despawn(&estruct, 1);
+	pthread_mutex_destroy(estruct.mutex);
+	return (1);
 }
