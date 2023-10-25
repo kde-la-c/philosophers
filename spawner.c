@@ -15,7 +15,7 @@
 typedef struct s_struct
 {
 	pthread_t		*tids;
-	pthread_mutex_t	*mutex;
+	pthread_mutex_t	*mutex[2];
 }	t_struct;
 
 void	*routine(void *arg)
@@ -24,14 +24,16 @@ void	*routine(void *arg)
 	(void)arg;
 
 	estruct = *(t_struct *)arg;
-	pthread_mutex_lock(estruct.mutex);
+	pthread_mutex_lock(estruct.mutex[0]);
+	pthread_mutex_lock(estruct.mutex[1]);
 	usleep(100000);
 	printf("HOLA!\n");
 	usleep(100000);
 	printf("QUE\n");
 	usleep(100000);
 	printf("TAL?\n");
-	pthread_mutex_unlock(estruct.mutex);
+	pthread_mutex_unlock(estruct.mutex[0]);
+	pthread_mutex_unlock(estruct.mutex[1]);
 	return (NULL);
 }
 
@@ -63,18 +65,22 @@ int	spawner(int *args)
 {
 	int				i;
 	t_struct		estruct;
-	pthread_mutex_t	mutex;
+	pthread_mutex_t	mutex1;
+	pthread_mutex_t	mutex2;
 	(void)args;
 
 	i = 0;
 	estruct.tids = malloc(sizeof(pthread_t) * args[0]);
-	estruct.mutex = &mutex;
-	pthread_mutex_init(estruct.mutex, NULL);
+	estruct.mutex[0] = &mutex1;
+	estruct.mutex[1] = &mutex2;
+	pthread_mutex_init(estruct.mutex[0], NULL);
+	pthread_mutex_init(estruct.mutex[1], NULL);
 	while (i < args[0])
 		spawn(&estruct, i++);
 	i = 0;
 	while (i < args[0])
 		despawn(&estruct, i++);
-	pthread_mutex_destroy(estruct.mutex);
+	pthread_mutex_destroy(estruct.mutex[0]);
+	pthread_mutex_destroy(estruct.mutex[1]);
 	return (1);
 }
