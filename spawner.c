@@ -12,42 +12,34 @@
 
 #include "philo.h"
 
-// pthread_mutex_t	mutex;
-
 typedef struct s_struct
 {
-	pthread_t		tid1;
-	pthread_t		tid2;
+	pthread_t		*tids;
 	pthread_mutex_t	*mutex;
 }	t_struct;
 
 void	*routine(void *arg)
 {
-	// pthread_mutex_t	mutex;
+	t_struct	estruct;
 	(void)arg;
 
-	// mutex = ((pthread_mutex_t *)arg)[2];
-	pthread_mutex_lock(((pthread_mutex_t **)arg)[2]);
+	estruct = *(t_struct *)arg;
+	pthread_mutex_lock(estruct.mutex);
 	usleep(100000);
 	printf("HOLA!\n");
 	usleep(100000);
 	printf("QUE\n");
 	usleep(100000);
 	printf("TAL?\n");
-	pthread_mutex_unlock(((pthread_mutex_t **)arg)[2]);
+	pthread_mutex_unlock(estruct.mutex);
 	return (NULL);
 }
 
 int	spawn(t_struct *estruct, int i)
 {
-	if (!i && pthread_create(&(*estruct).tid1, NULL, routine, (void *)estruct))
+	if (pthread_create(&(*estruct).tids[i], NULL, routine, (void *)estruct))
 	{
 		perror("eta m**rda");
-		return (-1);
-	}
-	else if (i && pthread_create(&(*estruct).tid2, NULL, routine, (void *)estruct))
-	{
-		perror("eta otra m**rda");
 		return (-1);
 	}
 	return (0);
@@ -57,10 +49,7 @@ int	despawn(t_struct *estruct, int i)
 {
 	int	j;
 
-	if (!i)
-		j = pthread_join((*estruct).tid1, NULL);
-	else
-		j = pthread_join((*estruct).tid2, NULL);
+	j = pthread_join((*estruct).tids[i], NULL);
 	if (j)
 	{
 		printf("j :%i\n", j);
@@ -72,16 +61,20 @@ int	despawn(t_struct *estruct, int i)
 
 int	spawner(int *args)
 {
+	int				i;
 	t_struct		estruct;
 	pthread_mutex_t	mutex;
 	(void)args;
 
+	i = 0;
+	estruct.tids = malloc(sizeof(pthread_t) * args[0]);
 	estruct.mutex = &mutex;
 	pthread_mutex_init(estruct.mutex, NULL);
-	spawn(&estruct, 0);
-	spawn(&estruct, 1);
-	despawn(&estruct, 0);
-	despawn(&estruct, 1);
+	while (i < args[0])
+		spawn(&estruct, i++);
+	i = 0;
+	while (i < args[0])
+		despawn(&estruct, i++);
 	pthread_mutex_destroy(estruct.mutex);
 	return (1);
 }
