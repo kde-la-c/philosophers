@@ -21,7 +21,5 @@ void	print_tstamp(long stsec, long stusec)
 
 	gettimeofday(&tv, NULL);
 	tstamp = ((tv.tv_sec - stsec) * 1000) + ((tv.tv_usec - stusec) / 1000);
-	// if(tstamp > 100)
-	// 	printf("wtf\n");
 	printf(">%i ms\n", tstamp);
 }

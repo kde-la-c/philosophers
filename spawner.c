@@ -15,10 +15,10 @@
 typedef struct s_struct
 {
 	pthread_t		*tids;
-	pthread_mutex_t	*mutex[2];
+	pthread_mutex_t	**mutex;
 }	t_struct;
 
-void	*routine(void *arg)
+void	*routine1(void *arg)
 {
 	t_struct	estruct;
 	(void)arg;
@@ -37,9 +37,33 @@ void	*routine(void *arg)
 	return (NULL);
 }
 
+void	*routine2(void *arg)
+{
+	t_struct	estruct;
+	(void)arg;
+
+	estruct = *(t_struct *)arg;
+	pthread_mutex_lock(estruct.mutex[2]);
+	pthread_mutex_lock(estruct.mutex[3]);
+	usleep(100000);
+	printf("HOLA!\n");
+	usleep(100000);
+	printf("QUE\n");
+	usleep(100000);
+	printf("TAL?\n");
+	pthread_mutex_unlock(estruct.mutex[2]);
+	pthread_mutex_unlock(estruct.mutex[3]);
+	return (NULL);
+}
+
 int	spawn(t_struct *estruct, int i)
 {
-	if (pthread_create(&(*estruct).tids[i], NULL, routine, (void *)estruct))
+	if (pthread_create(&(*estruct).tids[i], NULL, routine1, (void *)estruct))
+	{
+		perror("eta m**rda");
+		return (-1);
+	}
+	if (pthread_create(&(*estruct).tids[i + 1], NULL, routine2, (void *)estruct))
 	{
 		perror("eta m**rda");
 		return (-1);
@@ -65,22 +89,30 @@ int	spawner(int *args)
 {
 	int				i;
 	t_struct		estruct;
-	pthread_mutex_t	mutex1;
-	pthread_mutex_t	mutex2;
-	(void)args;
+	pthread_mutex_t	*mutex;
 
 	i = 0;
 	estruct.tids = malloc(sizeof(pthread_t) * args[0]);
-	estruct.mutex[0] = &mutex1;
-	estruct.mutex[1] = &mutex2;
-	pthread_mutex_init(estruct.mutex[0], NULL);
-	pthread_mutex_init(estruct.mutex[1], NULL);
+	mutex = malloc(sizeof(pthread_mutex_t) * args[0]);
 	while (i < args[0])
-		spawn(&estruct, i++);
+	{
+		estruct.mutex[i] = &mutex[i];
+		i++;
+	}
+	i = 0;
+	while (i < args[0])
+		pthread_mutex_init(estruct.mutex[i++], NULL);
+	i = 0;
+	while (i < args[0])
+	{
+		spawn(&estruct, i);
+		i += 2;
+	}
 	i = 0;
 	while (i < args[0])
 		despawn(&estruct, i++);
-	pthread_mutex_destroy(estruct.mutex[0]);
-	pthread_mutex_destroy(estruct.mutex[1]);
+	i = 0;
+	while (i < args[0])
+		pthread_mutex_destroy(estruct.mutex[i++]);
 	return (1);
 }
