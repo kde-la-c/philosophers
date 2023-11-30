@@ -23,3 +23,9 @@ void	print_tstamp(long stsec, long stusec)
 	tstamp = ((tv.tv_sec - stsec) * 1000) + ((tv.tv_usec - stusec) / 1000);
 	printf(">%i ms\n", tstamp);
 }
+
+int	print_error(char *msg)
+{
+	write(2, msg, ft_strlen(msg));
+	return (EXIT_FAILURE);
+}

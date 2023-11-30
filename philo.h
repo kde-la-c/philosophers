@@ -38,15 +38,18 @@ typedef struct s_arg
 
 // read args
 int	read_args(int argc, char **argv);
+int	parsing(int *args, int argc, char **argv);
 
 // spawner
 int	spawner(int *args);
 
 // output
 void	print_tstamp(long stsec, long stusec);
+int	print_error(char *msg);
 
 // utils
 int	ft_isdigit(int c);
 int	ft_atoi(const char *str);
+size_t	ft_strlen(const char *s);
 
 #endif

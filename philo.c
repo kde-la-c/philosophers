@@ -14,22 +14,11 @@
 
 int	main(int argc, char **argv)
 {
-	int	i;
 	int	*args;
 
-	i = 0;
-	args = (int *)malloc(sizeof(int) * argc);
-	if (read_args(argc, argv))
-	{
-		write(2, "invalid args\n", 13);
-		free(args);
-		return (1);
-	}
-	while (++i < argc)
-	{
-		args[i - 1] = ft_atoi(argv[i]);
-	}
-	args[i - 1] = -1;
-	spawner(args);	
+	args = NULL;
+	if (parsing(args, argc, argv) == EXIT_FAILURE)
+		return (print_error("Error\nInvalid input\n"));
+	spawner(args);
 	return (0);
 }

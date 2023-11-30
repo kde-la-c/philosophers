@@ -20,7 +20,7 @@ int	read_args(int argc, char **argv)
 	i = 1;
 	j = 0;
 	if (argc < 5 || argc > 6)
-		return (-1);
+		return (EXIT_FAILURE);
 	while (argv[i])
 	{
 		j = 0;
@@ -29,5 +29,21 @@ int	read_args(int argc, char **argv)
 				return (-2);
 		i++;
 	}
-	return (0);
+	return (EXIT_SUCCESS);
+}
+
+int	parsing(int *args, int argc, char **argv)
+{
+	int	i;
+
+	i = 0;
+	if (read_args(argc, argv) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	args = malloc(sizeof(int) * argc);
+	while (i + 1 < argc)
+	{
+		args[i] = ft_atoi(argv[i + 1]);
+		i++;
+	}
+	return (EXIT_SUCCESS);
 }

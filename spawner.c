@@ -21,7 +21,6 @@ typedef struct s_struct
 void	*routine1(void *arg)
 {
 	t_struct	estruct;
-	(void)arg;
 
 	estruct = *(t_struct *)arg;
 	pthread_mutex_lock(estruct.mutex[0]);
@@ -40,7 +39,6 @@ void	*routine1(void *arg)
 void	*routine2(void *arg)
 {
 	t_struct	estruct;
-	(void)arg;
 
 	estruct = *(t_struct *)arg;
 	pthread_mutex_lock(estruct.mutex[2]);
@@ -60,12 +58,10 @@ int	spawn(t_struct *estruct, int i)
 {
 	if (pthread_create(&(*estruct).tids[i], NULL, routine1, (void *)estruct))
 	{
-		perror("eta m**rda");
 		return (-1);
 	}
 	if (pthread_create(&(*estruct).tids[i + 1], NULL, routine2, (void *)estruct))
 	{
-		perror("eta m**rda");
 		return (-1);
 	}
 	return (0);
