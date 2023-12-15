@@ -19,6 +19,5 @@ int	main(int argc, char **argv)
 	args = NULL;
 	if (parsing(args, argc, argv) == EXIT_FAILURE)
 		return (print_error("Error\nInvalid input\n"));
-	spawner(args);
 	return (0);
 }
