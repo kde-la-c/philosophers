@@ -14,10 +14,11 @@
 
 int	main(int argc, char **argv)
 {
-	int	*args;
+	t_main	data;
 
-	args = NULL;
-	if (parsing(args, argc, argv) == EXIT_FAILURE)
+	ft_bzero((void *)&data, sizeof(t_main));
+	if (parsing(&data, argc, argv) == EXIT_FAILURE)
 		return (print_error("Error\nInvalid input\n"));
+	philosophers(&data);
 	return (0);
 }

@@ -20,16 +20,39 @@
 # include <sys/time.h>
 # include <pthread.h>
 
-// read args
-int	read_args(int argc, char **argv);
-int	parsing(int *args, int argc, char **argv);
+typedef struct s_main
+{
+	int				nb_philos;
+	pthread_t		*philos;
+	pthread_mutex_t	*forks;
+	int				*st_fork;
+	pthread_mutex_t	start;
+	pthread_mutex_t	stop;
+	int				t_eat;
+	int				t_sleep;
+	int				t_death;
+	int				loops;
+}	t_main;
 
-// output
-int	print_error(char *msg);
+typedef struct s_inst
+{
+	int		id;
+	t_main	*data;
+}	t_inst;
 
-// utils
-int	ft_isdigit(int c);
-int	ft_atoi(const char *str);
+/* PARSING */
+int		parsing(t_main *data, int argc, char **argv);
+
+/* OUTPUT */
+int		print_error(char *msg);
+
+/* CORE */
+int		philosophers(t_main *data);
+
+/* UTILS */
+int		ft_isdigit(int c);
+int		ft_atoi(const char *str);
 size_t	ft_strlen(const char *s);
+void	ft_bzero(void *s, size_t n);
 
 #endif

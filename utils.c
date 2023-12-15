@@ -53,3 +53,18 @@ int	ft_atoi(const char *str)
 	}
 	return (ret * sign);
 }
+
+void	ft_bzero(void *s, size_t n)
+{
+	unsigned long	i;
+	unsigned char	*tmp;
+
+	i = 0;
+	tmp = s;
+	while (i < n)
+	{
+		tmp[i] = 0;
+		i++;
+	}
+	s = tmp;
+}

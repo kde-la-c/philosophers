@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
-int	read_args(int argc, char **argv)
+static int	read_args(int argc, char **argv)
 {
 	int	i;
 	int	j;
@@ -26,24 +26,23 @@ int	read_args(int argc, char **argv)
 		j = 0;
 		while (argv[i][j])
 			if (!ft_isdigit(argv[i][j++]))
-				return (-2);
+				return (EXIT_FAILURE);
 		i++;
 	}
 	return (EXIT_SUCCESS);
 }
 
-int	parsing(int *args, int argc, char **argv)
+int	parsing(t_main *data, int argc, char **argv)
 {
-	int	i;
-
-	i = 0;
 	if (read_args(argc, argv) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
-	args = malloc(sizeof(int) * argc);
-	while (i + 1 < argc)
-	{
-		args[i] = ft_atoi(argv[i + 1]);
-		i++;
-	}
+	data->nb_philos = ft_atoi(argv[1]);
+	data->t_death = ft_atoi(argv[2]);
+	data->t_eat = ft_atoi(argv[3]);
+	data->t_sleep = ft_atoi(argv[4]);
+	if (argc == 6)
+		data->loops = ft_atoi(argv[5]);
+	else
+		data->loops = 0;
 	return (EXIT_SUCCESS);
 }

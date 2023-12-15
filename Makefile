@@ -15,7 +15,8 @@ NAME_DBG	= dbg
 SRC			= philo.c \
 			input.c \
 			utils.c \
-			output.c
+			output.c \
+			start_threads.c
 OBJS		= $(SRC:%.c=%.o)
 INCLUDE		= philo.h
 CC			= gcc
