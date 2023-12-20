@@ -12,37 +12,49 @@
 
 #include "philo.h"
 
-/**
- * TODO find a more coherent way to handle arguments, memory and errors
- * What's the best practice ?
-*/
-static t_inst	*init_structure(t_main *data)
+static int	init_structure(t_inst *inst, t_main *data)
 {
-	void	*ptr;
-	t_inst	ret;
-
 	data->philos = (pthread_t *)malloc(sizeof(pthread_t) * data->nb_philos);
 	if (!data->philos)
-		return (NULL);
+		return (free_struct(data), EXIT_FAILURE);
 	data->forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t)
 			* data->nb_philos);
 	if (!data->forks)
-		return (free(data->philos), NULL);
+		return (free_struct(data), EXIT_FAILURE);
 	data->st_fork = (int *)malloc(sizeof(int) * data->nb_philos);
 	if (!data->st_fork)
-		return (free(data->philos), free(data->forks), NULL);
-	ret.data = data;
-	ptr = &ret;
-	return ((t_inst *)ptr);
+		return (free_struct(data), EXIT_FAILURE);
+	inst->data = data;
+	return (EXIT_SUCCESS);
+}
+
+static int	init_mutexes(t_main *data)
+{
+	int	i;
+	
+	i = 0;
+	while (i < data->nb_philos)
+	{
+		if (pthread_mutex_init(&(data->forks[i]), NULL) == EXIT_FAILURE)
+			return (EXIT_FAILURE);
+		i++;
+	}
+	if (pthread_mutex_init(&data->start, NULL) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	if (pthread_mutex_init(&data->stop, NULL) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	if (pthread_mutex_init(&data->print, NULL) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }
 
 int	philosophers(t_main *data)
 {
-	t_inst	*instance;
+	t_inst	instance;
 
-	instance = init_structure(data);
-	if (!instance)
+	if (init_structure(&instance, data) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
-	
+	if (init_mutexes(data) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

@@ -28,6 +28,7 @@ typedef struct s_main
 	int				*st_fork;
 	pthread_mutex_t	start;
 	pthread_mutex_t	stop;
+	pthread_mutex_t	print;
 	int				t_eat;
 	int				t_sleep;
 	int				t_death;
@@ -48,6 +49,9 @@ int		print_error(char *msg);
 
 /* CORE */
 int		philosophers(t_main *data);
+
+/* FREE */
+void	free_struct(t_main *data);
 
 /* UTILS */
 int		ft_isdigit(int c);
