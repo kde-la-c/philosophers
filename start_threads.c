@@ -48,13 +48,41 @@ static int	init_mutexes(t_main *data)
 	return (EXIT_SUCCESS);
 }
 
+void	*routine(void *instance)
+{
+	int	id;
+
+	write(1, "hey\n", 4);
+	id = *(int *)instance;
+	printf("%i\n", id);
+	return (NULL);
+}
+
 int	philosophers(t_main *data)
 {
+	int		i;
 	t_inst	instance;
 
 	if (init_structure(&instance, data) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	if (init_mutexes(data) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
+	pthread_mutex_lock(&data->start);
+	i = 0;
+	while (++i < data->nb_philos)
+	{
+		instance.id = i;
+		if (pthread_create(&(data->philos[i - 1]), NULL, routine,
+			(void *)&instance))
+			return (EXIT_FAILURE);
+	}
+	pthread_mutex_unlock(&data->start);
+	i = 0;
+	while (++i < data->nb_philos)
+	{
+		instance.id = i;
+		if (pthread_join(data->philos[i - 1], NULL))
+			return (EXIT_FAILURE);
+	}
 	return (EXIT_SUCCESS);
 }

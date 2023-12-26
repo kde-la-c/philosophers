@@ -24,4 +24,22 @@ void	free_struct(t_main *data)
 		free(data);
 }
 
+int	dest_mutexes(t_main	*data)
+{
+	int	i;
 
+	i = 0;
+	while (i < data->nb_philos)
+	{
+		if (pthread_mutex_destroy(&(data->forks[i])) == EXIT_FAILURE)
+			return (EXIT_FAILURE);
+		i++;
+	}
+	if (pthread_mutex_destroy(&data->start) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	if (pthread_mutex_destroy(&data->stop) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	if (pthread_mutex_destroy(&data->print) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
+}

@@ -50,8 +50,9 @@ int		print_error(char *msg);
 /* CORE */
 int		philosophers(t_main *data);
 
-/* FREE */
+/* DESTROY */
 void	free_struct(t_main *data);
+int		dest_mutexes(t_main	*data);
 
 /* UTILS */
 int		ft_isdigit(int c);
