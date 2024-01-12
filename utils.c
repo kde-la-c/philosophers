@@ -68,3 +68,21 @@ void	ft_bzero(void *s, size_t n)
 	}
 	s = tmp;
 }
+
+int	ft_putnbr_fd(int n, int fd)
+{
+	int	ret;
+
+	ret = 0;
+	if (n < 10)
+	{
+		n += 48;
+		ret += write(fd, &n, 1);
+	}
+	else if (n > 9)
+	{
+		ret += ft_putnbr_fd(n / 10, fd);
+		ret += ft_putnbr_fd(n % 10, fd);
+	}
+	return (ret);
+}

@@ -31,7 +31,7 @@ static int	init_structure(t_inst *inst, t_main *data)
 static int	init_mutexes(t_main *data)
 {
 	int	i;
-	
+
 	i = 0;
 	while (i < data->nb_philos)
 	{
@@ -48,13 +48,38 @@ static int	init_mutexes(t_main *data)
 	return (EXIT_SUCCESS);
 }
 
+int	get_tstamp(void)
+{
+	struct timeval	tv;
+
+	ft_bzero((void *)&tv, sizeof(struct timeval));
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec % 1000) * 1000 + tv.tv_usec / 1000);
+}
+
+void	print_tsatamp(int basetime)
+{
+	struct timeval	tv;
+
+	ft_bzero((void *)&tv, sizeof(struct timeval));
+	gettimeofday(&tv, NULL);
+	ft_putnbr_fd((tv.tv_sec % 1000) * 1000 + tv.tv_usec / 1000 - basetime, 1);
+	write(1, "ms \n", 4);
+}
+
 void	*routine(void *instance)
 {
-	int	id;
+	static int	id = 0;
+	t_main		*data;
 
-	write(1, "hey\n", 4);
-	id = *(int *)instance;
-	printf("%i\n", id);
+	id += 1;
+	data = (t_main *)instance;
+	pthread_mutex_lock(&data->start);
+	pthread_mutex_unlock(&data->start);
+	pthread_mutex_lock(&data->forks[0]);
+	usleep(500000);
+	print_tsatamp(data->starttime);
+	pthread_mutex_unlock(&data->forks[0]);
 	return (NULL);
 }
 
@@ -69,18 +94,17 @@ int	philosophers(t_main *data)
 		return (EXIT_FAILURE);
 	pthread_mutex_lock(&data->start);
 	i = 0;
-	while (++i < data->nb_philos)
+	while (++i <= data->nb_philos)
 	{
-		instance.id = i;
 		if (pthread_create(&(data->philos[i - 1]), NULL, routine,
-			(void *)&instance))
+				(void *)data))
 			return (EXIT_FAILURE);
 	}
+	data->starttime = get_tstamp();
 	pthread_mutex_unlock(&data->start);
 	i = 0;
-	while (++i < data->nb_philos)
+	while (++i <= data->nb_philos)
 	{
-		instance.id = i;
 		if (pthread_join(data->philos[i - 1], NULL))
 			return (EXIT_FAILURE);
 	}

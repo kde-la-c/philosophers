@@ -33,6 +33,7 @@ typedef struct s_main
 	int				t_sleep;
 	int				t_death;
 	int				loops;
+	int				starttime;
 }	t_main;
 
 typedef struct s_inst
@@ -59,5 +60,6 @@ int		ft_isdigit(int c);
 int		ft_atoi(const char *str);
 size_t	ft_strlen(const char *s);
 void	ft_bzero(void *s, size_t n);
+int		ft_putnbr_fd(int n, int fd);
 
 #endif
