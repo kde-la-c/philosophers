@@ -43,3 +43,16 @@ int	dest_mutexes(t_main	*data)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
+
+int	join_threads(t_main *data)
+{
+	int	i;
+
+	i = 0;
+	while (++i <= data->nb_philos)
+	{
+		if (pthread_join(data->philos[i - 1], NULL))
+			return (perror("pthread_join"), EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
+}

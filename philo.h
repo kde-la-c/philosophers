@@ -47,13 +47,16 @@ int		parsing(t_main *data, int argc, char **argv);
 
 /* OUTPUT */
 int		print_error(char *msg);
+void	print_tsatamp(int basetime);
 
 /* CORE */
 int		philosophers(t_main *data);
+void	*routine(void *instance);
 
 /* DESTROY */
 void	free_struct(t_main *data);
 int		dest_mutexes(t_main	*data);
+int		join_threads(t_main *data);
 
 /* UTILS */
 int		ft_isdigit(int c);

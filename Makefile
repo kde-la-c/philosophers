@@ -17,7 +17,8 @@ SRC			= philo.c \
 			utils.c \
 			output.c \
 			start_threads.c \
-			stop_threads.c
+			stop_threads.c \
+			routines.c
 OBJS		= $(SRC:%.c=%.o)
 INCLUDE		= philo.h
 CC			= gcc
