@@ -12,18 +12,29 @@
 
 #include "philo.h"
 
-void	*routine(void *instance)
+// void	eat(t_inst *data)
+// {
+	
+// }
+
+// void	sleep(t_inst *data)
+// {
+
+// }
+
+void	*routine(void *data)
 {
 	static int	id = 0;
-	t_main		*data;
+	t_inst		instance;
 
 	id += 1;
-	data = (t_main *)instance;
-	pthread_mutex_lock(&data->start);
-	pthread_mutex_unlock(&data->start);
-	pthread_mutex_lock(&data->forks[0]);
-	usleep(500000);
-	print_tsatamp(data->starttime);
-	pthread_mutex_unlock(&data->forks[0]);
+	instance.data = (t_main *)data;
+	instance.id = id;
+	pthread_mutex_lock(&instance.data->start);
+	pthread_mutex_unlock(&instance.data->start);
+	pthread_mutex_lock(&instance.data->forks[0]);
+	ft_msleep(500);
+	print_tsatamp(instance.data->starttime);
+	pthread_mutex_unlock(&instance.data->forks[0]);
 	return (NULL);
 }

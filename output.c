@@ -38,10 +38,6 @@ int	ft_putnbr_fd(int n, int fd)
 
 void	print_tsatamp(int basetime)
 {
-	struct timeval	tv;
-
-	ft_bzero((void *)&tv, sizeof(struct timeval));
-	gettimeofday(&tv, NULL);
-	ft_putnbr_fd((tv.tv_sec % 1000) * 1000 + tv.tv_usec / 1000 - basetime, 1);
+	ft_putnbr_fd(get_tstamp() - basetime, 1);
 	write(1, "ms \n", 4);
 }

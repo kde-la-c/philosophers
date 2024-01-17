@@ -48,6 +48,7 @@ int		parsing(t_main *data, int argc, char **argv);
 /* OUTPUT */
 int		print_error(char *msg);
 void	print_tsatamp(int basetime);
+int		ft_putnbr_fd(int n, int fd);
 
 /* CORE */
 int		philosophers(t_main *data);
@@ -63,6 +64,7 @@ int		ft_isdigit(int c);
 int		ft_atoi(const char *str);
 size_t	ft_strlen(const char *s);
 void	ft_bzero(void *s, size_t n);
-int		ft_putnbr_fd(int n, int fd);
+int		get_tstamp(void);
+void	ft_msleep(int sleeptime);
 
 #endif

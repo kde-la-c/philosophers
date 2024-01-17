@@ -68,3 +68,12 @@ void	ft_bzero(void *s, size_t n)
 	}
 	s = tmp;
 }
+
+void	ft_msleep(int sleeptime)
+{
+	int	orig_time;
+
+	orig_time = get_tstamp();
+	while (get_tstamp() <= orig_time + sleeptime)
+		usleep(400);
+}
