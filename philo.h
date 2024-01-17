@@ -47,8 +47,9 @@ int		parsing(t_main *data, int argc, char **argv);
 
 /* OUTPUT */
 int		print_error(char *msg);
-void	print_tsatamp(int basetime);
+void	print_tsatamp(int basetime, int id, char *status);
 int		ft_putnbr_fd(int n, int fd);
+
 
 /* CORE */
 int		philosophers(t_main *data);

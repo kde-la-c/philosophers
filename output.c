@@ -36,8 +36,12 @@ int	ft_putnbr_fd(int n, int fd)
 	return (ret);
 }
 
-void	print_tsatamp(int basetime)
+void	print_tsatamp(int basetime, int id, char *status)
 {
 	ft_putnbr_fd(get_tstamp() - basetime, 1);
-	write(1, "ms \n", 4);
+	write(1, "ms - ", 5);
+	ft_putnbr_fd(id, 1);
+	write(1, " ", 1);
+	write(1, status, ft_strlen(status));
+	write(1, "\n", 1);
 }

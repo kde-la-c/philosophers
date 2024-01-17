@@ -34,7 +34,7 @@ void	*routine(void *data)
 	pthread_mutex_unlock(&instance.data->start);
 	pthread_mutex_lock(&instance.data->forks[0]);
 	ft_msleep(500);
-	print_tsatamp(instance.data->starttime);
+	print_tsatamp(instance.data->starttime, instance.id, "philo living");
 	pthread_mutex_unlock(&instance.data->forks[0]);
 	return (NULL);
 }
