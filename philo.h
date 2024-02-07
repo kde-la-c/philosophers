@@ -20,6 +20,8 @@
 # include <sys/time.h>
 # include <pthread.h>
 
+	# include <errno.h>
+
 typedef struct s_main
 {
 	int				nb_philos;
@@ -45,11 +47,12 @@ typedef struct s_inst
 /* PARSING */
 int		parsing(t_main *data, int argc, char **argv);
 
+	int perror_exit(char *err);
+
 /* OUTPUT */
 int		print_error(char *msg);
-void	print_tsatamp(int basetime, int id, char *status);
+void	print_tstamp(t_inst *inst, char *status);
 int		ft_putnbr_fd(int n, int fd);
-
 
 /* CORE */
 int		philosophers(t_main *data);

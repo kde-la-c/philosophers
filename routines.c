@@ -12,15 +12,23 @@
 
 #include "philo.h"
 
-// void	eat(t_inst *data)
-// {
+// n philos
+// philo 1 : fork1 & fork2
+// philo 2 : fork2 & fork3
+// philo n : forkn & fork1
+
+void	eat(t_inst *inst)
+{
+	int	fork1;
+	int	fork2;
+
+	fork1 = inst->id;
+	if (inst->id == inst->data->nb_philos)
+		fork2 = 1;
+	else
+		fork2 = inst->id + 1;
 	
-// }
-
-// void	sleep(t_inst *data)
-// {
-
-// }
+}
 
 void	*routine(void *data)
 {
@@ -32,9 +40,16 @@ void	*routine(void *data)
 	instance.id = id;
 	pthread_mutex_lock(&instance.data->start);
 	pthread_mutex_unlock(&instance.data->start);
-	pthread_mutex_lock(&instance.data->forks[0]);
-	ft_msleep(500);
-	print_tsatamp(instance.data->starttime, instance.id, "philo living");
-	pthread_mutex_unlock(&instance.data->forks[0]);
+	//TODO try splitting philos in 2 or 3 food services (for odd, even and the extra)
+	//TODO infinite boucle pour alterner le sommeil et la bouffe selon les tours
+	if (instance.id / 2 == 1)
+	{
+		eat(&instance);
+	}
+	else
+	{
+		ft_msleep(50);
+		eat(&instance);
+	}
 	return (NULL);
 }

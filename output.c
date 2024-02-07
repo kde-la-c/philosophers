@@ -12,6 +12,12 @@
 
 #include "philo.h"
 
+	int	perror_exit(char *err)
+	{
+		perror(err);
+		exit(1);
+	}
+
 int	print_error(char *msg)
 {
 	write(2, msg, ft_strlen(msg));
@@ -36,12 +42,14 @@ int	ft_putnbr_fd(int n, int fd)
 	return (ret);
 }
 
-void	print_tsatamp(int basetime, int id, char *status)
+void	print_tstamp(t_inst *inst, char *status)
 {
-	ft_putnbr_fd(get_tstamp() - basetime, 1);
+	pthread_mutex_lock(&inst->data->print);
+	ft_putnbr_fd(get_tstamp() - inst->data->starttime, 1);
 	write(1, "ms - ", 5);
-	ft_putnbr_fd(id, 1);
+	ft_putnbr_fd(inst->id, 1);
 	write(1, " ", 1);
 	write(1, status, ft_strlen(status));
 	write(1, "\n", 1);
+	pthread_mutex_unlock(&inst->data->print);
 }
