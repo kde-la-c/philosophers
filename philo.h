@@ -29,6 +29,8 @@ typedef struct s_main
 	pthread_mutex_t	*forks;
 	int				*st_fork;
 	pthread_mutex_t	start;
+	pthread_t		lifeline;
+	int				death;
 	pthread_mutex_t	stop;
 	pthread_mutex_t	print;
 	int				t_eat;
@@ -41,6 +43,7 @@ typedef struct s_main
 typedef struct s_inst
 {
 	int		id;
+	int		ate;
 	t_main	*data;
 }	t_inst;
 
@@ -57,6 +60,7 @@ int		ft_putnbr_fd(int n, int fd);
 /* CORE */
 int		philosophers(t_main *data);
 void	*routine(void *instance);
+void	*check_lifeline(void *data);
 
 /* DESTROY */
 void	free_struct(t_main *data);

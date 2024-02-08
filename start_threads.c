@@ -68,10 +68,12 @@ int	philosophers(t_main *data)
 		return (perror("init_mutexes"), EXIT_FAILURE);
 	pthread_mutex_lock(&data->start);
 	i = 0;
+	if (pthread_create(&data->lifeline, NULL, check_lifeline, (void *)data))
+		return (perror("pthread_create_lifeline"), EXIT_FAILURE);
 	while (++i <= data->nb_philos)
 	{
 		if (pthread_create(&(data->philos[i - 1]), NULL, routine, (void *)data))
-			return (perror("pthread_create"), EXIT_FAILURE);
+			return (perror("pthread_create_philos"), EXIT_FAILURE);
 	}
 	data->starttime = get_tstamp();
 	pthread_mutex_unlock(&data->start);
