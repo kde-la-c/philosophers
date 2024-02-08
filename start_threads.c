@@ -68,6 +68,7 @@ int	philosophers(t_main *data)
 		return (perror("init_mutexes"), EXIT_FAILURE);
 	pthread_mutex_lock(&data->start);
 	i = 0;
+	//TODO finish coding lifeline thread
 	if (pthread_create(&data->lifeline, NULL, check_lifeline, (void *)data))
 		return (perror("pthread_create_lifeline"), EXIT_FAILURE);
 	while (++i <= data->nb_philos)
