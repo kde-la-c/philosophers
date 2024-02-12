@@ -38,13 +38,19 @@ typedef struct s_main
 	int				t_death;
 	int				loops;
 	int				starttime;
+
+	int				meals;
 }	t_main;
 
 typedef struct s_inst
 {
-	int		id;
+	int				id;
+	int				lastmeal;
+	pthread_mutex_t	*lfork;
+	pthread_mutex_t	*rfork;
+	t_main			*data;
+
 	int		ate;
-	t_main	*data;
 }	t_inst;
 
 /* PARSING */

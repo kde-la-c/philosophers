@@ -39,6 +39,7 @@ void	eat(t_inst *inst)
 
 	// eat
 	print_tstamp(inst, "is eating");
+	inst->lastmeal = get_tstamp() - inst->data->starttime;
 	ft_msleep(inst->data->t_eat);
 	inst->ate++;
 
@@ -47,7 +48,6 @@ void	eat(t_inst *inst)
 	inst->data->st_fork[fork1] = 0;
 	pthread_mutex_unlock(&inst->data->forks[fork1]);
 	inst->data->st_fork[fork2] = 0;
-	// print_tstamp(inst, "released forks");
 }
 
 void	*check_lifeline(void *arg)
@@ -59,7 +59,7 @@ void	*check_lifeline(void *arg)
 	{
 		ft_msleep(5);
 	}
-	killall(data);
+	pthread_mutex_lock(&data->print);
 	return (NULL);
 }
 
@@ -79,15 +79,16 @@ void	*routine(void *data)
 	//TODO infinite boucle pour alterner le sommeil et la bouffe selon les tours
 	while (i++ < instance.data->loops || !instance.data->loops)
 	{
-		if (instance.id / 2 == 1)
+		if (instance.id % 2 == 1)
 		{
 			eat(&instance);
 		}
 		else
 		{
-			ft_msleep(instance.data->t_eat / 2);
+			ft_msleep(1);
 			eat(&instance);
 		}
 	}
+	instance.data->meals += instance.ate;
 	return (NULL);
 }

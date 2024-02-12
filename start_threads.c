@@ -80,5 +80,6 @@ int	philosophers(t_main *data)
 	pthread_mutex_unlock(&data->start);
 	join_threads(data);
 	dest_mutexes(data);
+	printf("%i meals taken\n", data->meals);
 	return (EXIT_SUCCESS);
 }
