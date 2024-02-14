@@ -20,4 +20,4 @@ dbg*
 *.dSYM
 test*
 
-philo
+*/philo
