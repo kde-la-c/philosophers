@@ -19,22 +19,14 @@
 
 void	eat(t_inst *inst)
 {
-	int	fork1;
-	int	fork2;
-
-	fork1 = inst->id;
-	if (inst->id == inst->data->nb_philos)
-		fork2 = 1;
-	else
-		fork2 = inst->id + 1;
 	// take forks
-	while (inst->data->st_fork[fork1] || inst->data->st_fork[fork2])
+	while (inst->data->st_fork[inst->lfork] || inst->data->st_fork[inst->rfork])
 		usleep(1);
-	pthread_mutex_lock(&inst->data->forks[fork1]);
-	inst->data->st_fork[fork1] = 1;
+	pthread_mutex_lock(&inst->data->forks[inst->lfork]);
+	inst->data->st_fork[inst->lfork] = 1;
 	print_tstamp(inst, "picked a fork");
-	pthread_mutex_lock(&inst->data->forks[fork2]);
-	inst->data->st_fork[fork2] = 1;
+	pthread_mutex_lock(&inst->data->forks[inst->rfork]);
+	inst->data->st_fork[inst->rfork] = 1;
 	print_tstamp(inst, "picked a fork");
 
 	// eat
@@ -44,10 +36,10 @@ void	eat(t_inst *inst)
 	inst->ate++;
 
 	// leave forks
-	pthread_mutex_unlock(&inst->data->forks[fork2]);
-	inst->data->st_fork[fork1] = 0;
-	pthread_mutex_unlock(&inst->data->forks[fork1]);
-	inst->data->st_fork[fork2] = 0;
+	pthread_mutex_unlock(&inst->data->forks[inst->rfork]);
+	inst->data->st_fork[inst->rfork] = 0;
+	pthread_mutex_unlock(&inst->data->forks[inst->lfork]);
+	inst->data->st_fork[inst->lfork] = 0;
 }
 
 void	*check_lifeline(void *arg)
@@ -74,19 +66,25 @@ void	*routine(void *data)
 	instance.data = (t_main *)data;
 	instance.id = id;
 	instance.ate = 0;
+	instance.lfork = instance.id;
+	if (instance.id == instance.data->nb_philos)
+		instance.rfork = 1;
+	else
+		instance.rfork = instance.id + 1;
 	pthread_mutex_lock(&instance.data->start);
 	pthread_mutex_unlock(&instance.data->start);
-	//TODO infinite boucle pour alterner le sommeil et la bouffe selon les tours
 	while (i++ < instance.data->loops || !instance.data->loops)
 	{
 		if (instance.id % 2 == 1)
 		{
 			eat(&instance);
+			// ft_msleep();
 		}
 		else
 		{
 			ft_msleep(1);
 			eat(&instance);
+			// ft_msleep();
 		}
 	}
 	instance.data->meals += instance.ate;

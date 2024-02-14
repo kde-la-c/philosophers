@@ -46,8 +46,8 @@ typedef struct s_inst
 {
 	int				id;
 	int				lastmeal;
-	pthread_mutex_t	*lfork;
-	pthread_mutex_t	*rfork;
+	int				rfork;
+	int				lfork;
 	t_main			*data;
 
 	int		ate;
