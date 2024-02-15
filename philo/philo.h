@@ -19,8 +19,13 @@
 # include <unistd.h>
 # include <sys/time.h>
 # include <pthread.h>
+# include <errno.h>
 
-	# include <errno.h>
+# define TAKE_FORK	"has taken a fork"
+# define EAT		"is eating"
+# define SLEEP		"is sleeping"
+# define THINK		"is thinking"
+# define DIE		"died"
 
 typedef struct s_main
 {

@@ -75,5 +75,5 @@ void	ft_msleep(int sleeptime)
 
 	orig_time = get_tstamp();
 	while (get_tstamp() <= orig_time + sleeptime)
-		usleep(1000);
+		usleep(100);
 }

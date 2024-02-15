@@ -22,7 +22,7 @@ SRC			= philo.c \
 OBJS		= $(SRC:%.c=%.o)
 INCLUDE		= philo.h
 CC			= gcc
-CFLAGS		= -Wall -Wextra -Werror -O2 -flto
+CFLAGS		= -Wall -Wextra -Werror
 RM			= rm
 RFLAGS		= -rf
 

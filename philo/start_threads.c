@@ -52,9 +52,9 @@ int	get_tstamp(void)
 {
 	struct timeval	tv;
 
-	ft_bzero((void *)&tv, sizeof(struct timeval));
 	gettimeofday(&tv, NULL);
-	return ((tv.tv_sec % 1000) * 1000 + tv.tv_usec / 1000);
+	// return ((tv.tv_sec % 1000) * 1000 + tv.tv_usec / 1000);
+	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
 int	philosophers(t_main *data)

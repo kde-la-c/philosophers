@@ -21,16 +21,16 @@ void	eat(t_inst *inst)
 {
 	// take forks
 	while (inst->data->st_fork[inst->lfork] || inst->data->st_fork[inst->rfork])
-		usleep(1);
+		usleep(0);
 	pthread_mutex_lock(&inst->data->forks[inst->lfork]);
 	inst->data->st_fork[inst->lfork] = 1;
-	print_tstamp(inst, "picked a fork");
+	print_tstamp(inst, TAKE_FORK);
 	pthread_mutex_lock(&inst->data->forks[inst->rfork]);
 	inst->data->st_fork[inst->rfork] = 1;
-	print_tstamp(inst, "picked a fork");
+	print_tstamp(inst, TAKE_FORK);
 
 	// eat
-	print_tstamp(inst, "is eating");
+	print_tstamp(inst, EAT);
 	inst->lastmeal = get_tstamp() - inst->data->starttime;
 	ft_msleep(inst->data->t_eat);
 	inst->ate++;
@@ -40,6 +40,7 @@ void	eat(t_inst *inst)
 	inst->data->st_fork[inst->rfork] = 0;
 	pthread_mutex_unlock(&inst->data->forks[inst->lfork]);
 	inst->data->st_fork[inst->lfork] = 0;
+	ft_msleep(5);
 }
 
 void	*check_lifeline(void *arg)
@@ -78,13 +79,15 @@ void	*routine(void *data)
 		if (instance.id % 2 == 1)
 		{
 			eat(&instance);
-			// ft_msleep();
+			// print_tstamp(&instance, SLEEP);
+			// ft_msleep(instance.data->t_sleep);
 		}
 		else
 		{
-			ft_msleep(1);
+			usleep(300);
 			eat(&instance);
-			// ft_msleep();
+			// print_tstamp(&instance, SLEEP);
+			// ft_msleep(instance.data->t_sleep);
 		}
 	}
 	instance.data->meals += instance.ate;
