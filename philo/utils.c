@@ -71,9 +71,11 @@ void	ft_bzero(void *s, size_t n)
 
 void	ft_msleep(int sleeptime)
 {
-	int	orig_time;
+	int				orig_time;
+	struct timeval	tv;
 
-	orig_time = get_tstamp();
+	gettimeofday(&tv, NULL);
+	orig_time = tv.tv_sec * 1000 + tv.tv_usec / 1000;
 	while (get_tstamp() <= orig_time + sleeptime)
 		usleep(100);
 }

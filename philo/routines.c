@@ -43,19 +43,6 @@ void	eat(t_inst *inst)
 	ft_msleep(5);
 }
 
-void	*check_lifeline(void *arg)
-{
-	t_main	*data;
-
-	data = (t_main *)arg;
-	while (!data->death)
-	{
-		ft_msleep(5);
-	}
-	pthread_mutex_lock(&data->print);
-	return (NULL);
-}
-
 void	*routine(void *data)
 {
 	int			i;
@@ -72,6 +59,7 @@ void	*routine(void *data)
 		instance.rfork = 1;
 	else
 		instance.rfork = instance.id + 1;
+	//TODO es necesario el mutex start?
 	pthread_mutex_lock(&instance.data->start);
 	pthread_mutex_unlock(&instance.data->start);
 	while (i++ < instance.data->loops || !instance.data->loops)
@@ -84,6 +72,7 @@ void	*routine(void *data)
 		}
 		else
 		{
+			//TODO usleep solo al iniciar
 			usleep(300);
 			eat(&instance);
 			// print_tstamp(&instance, SLEEP);

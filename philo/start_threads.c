@@ -53,8 +53,7 @@ int	get_tstamp(void)
 	struct timeval	tv;
 
 	gettimeofday(&tv, NULL);
-	// return ((tv.tv_sec % 1000) * 1000 + tv.tv_usec / 1000);
-	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
 }
 
 int	philosophers(t_main *data)
@@ -68,11 +67,9 @@ int	philosophers(t_main *data)
 		return (perror("init_mutexes"), EXIT_FAILURE);
 	pthread_mutex_lock(&data->start);
 	i = 0;
-	//TODO finish coding lifeline thread
-	if (pthread_create(&data->lifeline, NULL, check_lifeline, (void *)data))
-		return (perror("pthread_create_lifeline"), EXIT_FAILURE);
 	while (++i <= data->nb_philos)
 	{
+		//TODO poner aqui el delay
 		if (pthread_create(&(data->philos[i - 1]), NULL, routine, (void *)data))
 			return (perror("pthread_create_philos"), EXIT_FAILURE);
 	}
