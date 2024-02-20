@@ -27,20 +27,20 @@ int	print_error(char *msg)
 void	print_tstamp(t_philo *philo, int status)
 {
 	pthread_mutex_lock(&philo->data->print);
-	if (status == 0)
+	if (status == TAKE_FORK)
 		printf("%ims - %i %s\n", get_tstamp() - philo->data->starttime, philo->id,
-			TAKE_FORK);
-	else if (status == 1)
+			"has taken a fork");
+	else if (status == EAT)
 		printf("%ims - %i %s\n", get_tstamp() - philo->data->starttime, philo->id,
-			EAT);
-	else if (status == 2)
+			"is eating");
+	else if (status == SLEEP)
 		printf("%ims - %i %s\n", get_tstamp() - philo->data->starttime, philo->id,
-			SLEEP);
-	else if (status == 3)
+			"is sleeping");
+	else if (status == THINK)
 		printf("%ims - %i %s\n", get_tstamp() - philo->data->starttime, philo->id,
-			THINK);
-	else if (status == 4)
+			"is thinking");
+	else if (status == DIE)
 		printf("%ims - %i %s\n", get_tstamp() - philo->data->starttime, philo->id,
-			DIE);
+			"died");
 	pthread_mutex_unlock(&philo->data->print);
 }

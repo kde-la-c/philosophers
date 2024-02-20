@@ -21,14 +21,15 @@
 # include <pthread.h>
 # include <errno.h>
 
-# define TAKE_FORK	"has taken a fork"
-# define EAT		"is eating"
-# define SLEEP		"is sleeping"
-# define THINK		"is thinking"
-# define DIE		"died"
+# define TAKE_FORK	0
+# define EAT		1
+# define SLEEP		2
+# define THINK		3
+# define DIE		4
 
 typedef struct s_main
 {
+	//TODO add t_philo array here
 	int				nb_philos;
 	pthread_t		*thds;
 	pthread_mutex_t	*forks;

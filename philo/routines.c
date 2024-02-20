@@ -24,13 +24,13 @@ void	eat(t_philo *philo)
 		usleep(100);
 	pthread_mutex_lock(&philo->data->forks[philo->lfork]);
 	philo->data->st_fork[philo->lfork] = 1;
-	print_tstamp(philo, 0);
+	print_tstamp(philo, TAKE_FORK);
 	pthread_mutex_lock(&philo->data->forks[philo->rfork]);
 	philo->data->st_fork[philo->rfork] = 1;
-	print_tstamp(philo, 0);
+	print_tstamp(philo, TAKE_FORK);
 
 	// eat
-	print_tstamp(philo, 1);
+	print_tstamp(philo, EAT);
 	philo->lastmeal = get_tstamp() - philo->data->starttime;
 	ft_msleep(philo->data->t_eat);
 	philo->ate++;

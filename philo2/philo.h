@@ -28,26 +28,30 @@ typedef pthread_t		t_thd;
 typedef struct	s_data
 {
 	int		nb_philos;
-	int		t_death;
+	t_philo	**philos;
+	t_mtx	*forks;
+	int		*st_fork;
+	t_mtx	start;
+	t_mtx	stop;
+	t_mtx	print;
 	int		t_eat;
 	int		t_sleep;
-	int		nb_loops;
+	int		t_death;
+	int		loops;
 	int		starttime;
-	t_thd	*philos;
-	t_mtx	*forks;
-	int		*st_forks;
-	t_mtx	print;
-	t_mtx	start;
 }	t_data;
 
 typedef struct	s_philo
 {
-	t_data	*data;
 	int		id;
-	int		lfork;
-	int		rfork;
+	t_thd	*thd;
 	int		lastmeal;
-	int		mealcount;
+	t_mtx	*rfork;
+	int		rforkid;
+	t_mtx	*lfork;
+	int		lforkid;
+	int		meals;
+	t_data	*data;
 }	t_philo;
 
 

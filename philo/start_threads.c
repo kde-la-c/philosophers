@@ -61,6 +61,7 @@ int	philosophers(t_main *data)
 	int		i;
 	t_philo	philo;
 
+	//TODO init instances here
 	if (init_structure(&philo, data) == EXIT_FAILURE)
 		return (perror("init_structure"), EXIT_FAILURE);
 	if (init_mutexes(data) == EXIT_FAILURE)
