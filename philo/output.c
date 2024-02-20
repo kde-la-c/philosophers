@@ -24,10 +24,23 @@ int	print_error(char *msg)
 	return (EXIT_FAILURE);
 }
 
-void	print_tstamp(t_philo *philo, char *status)
+void	print_tstamp(t_philo *philo, int status)
 {
 	pthread_mutex_lock(&philo->data->print);
-	printf("%ims - %i %s\n", get_tstamp() - philo->data->starttime, philo->id,
-		status);
+	if (status == 0)
+		printf("%ims - %i %s\n", get_tstamp() - philo->data->starttime, philo->id,
+			TAKE_FORK);
+	else if (status == 1)
+		printf("%ims - %i %s\n", get_tstamp() - philo->data->starttime, philo->id,
+			EAT);
+	else if (status == 2)
+		printf("%ims - %i %s\n", get_tstamp() - philo->data->starttime, philo->id,
+			SLEEP);
+	else if (status == 3)
+		printf("%ims - %i %s\n", get_tstamp() - philo->data->starttime, philo->id,
+			THINK);
+	else if (status == 4)
+		printf("%ims - %i %s\n", get_tstamp() - philo->data->starttime, philo->id,
+			DIE);
 	pthread_mutex_unlock(&philo->data->print);
 }

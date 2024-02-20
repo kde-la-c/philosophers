@@ -14,8 +14,8 @@
 
 static int	init_structure(t_philo *philo, t_main *data)
 {
-	data->threads = (pthread_t *)malloc(sizeof(pthread_t) * data->nb_philos);
-	if (!data->threads)
+	data->thds = (pthread_t *)malloc(sizeof(pthread_t) * data->nb_philos);
+	if (!data->thds)
 		return (free_struct(data), EXIT_FAILURE);
 	data->forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t)
 			* data->nb_philos);
@@ -70,7 +70,7 @@ int	philosophers(t_main *data)
 	while (++i <= data->nb_philos)
 	{
 		//TODO poner aqui el delay
-		if (pthread_create(&(data->threads[i - 1]), NULL, routine, (void *)data))
+		if (pthread_create(&(data->thds[i - 1]), NULL, routine, (void *)data))
 			return (perror("pthread_create_philos"), EXIT_FAILURE);
 	}
 	data->starttime = get_tstamp();

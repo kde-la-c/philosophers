@@ -30,7 +30,7 @@
 typedef struct s_main
 {
 	int				nb_philos;
-	pthread_t		*threads;
+	pthread_t		*thds;
 	pthread_mutex_t	*forks;
 	int				*st_fork;
 	pthread_mutex_t	start;
@@ -64,7 +64,7 @@ int		parsing(t_main *data, int argc, char **argv);
 
 /* OUTPUT */
 int		print_error(char *msg);
-void	print_tstamp(t_philo *philo, char *status);
+void	print_tstamp(t_philo *philo, int status);
 
 /* CORE */
 int		philosophers(t_main *data);
