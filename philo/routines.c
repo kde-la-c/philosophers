@@ -17,29 +17,29 @@
 // philo 2 : fork2 & fork3
 // philo n : forkn & fork1
 
-void	eat(t_inst *inst)
+void	eat(t_philo *philo)
 {
 	// take forks
-	while (inst->data->st_fork[inst->lfork] || inst->data->st_fork[inst->rfork])
+	while (philo->data->st_fork[philo->lfork] || philo->data->st_fork[philo->rfork])
 		usleep(0);
-	pthread_mutex_lock(&inst->data->forks[inst->lfork]);
-	inst->data->st_fork[inst->lfork] = 1;
-	print_tstamp(inst, TAKE_FORK);
-	pthread_mutex_lock(&inst->data->forks[inst->rfork]);
-	inst->data->st_fork[inst->rfork] = 1;
-	print_tstamp(inst, TAKE_FORK);
+	pthread_mutex_lock(&philo->data->forks[philo->lfork]);
+	philo->data->st_fork[philo->lfork] = 1;
+	print_tstamp(philo, TAKE_FORK);
+	pthread_mutex_lock(&philo->data->forks[philo->rfork]);
+	philo->data->st_fork[philo->rfork] = 1;
+	print_tstamp(philo, TAKE_FORK);
 
 	// eat
-	print_tstamp(inst, EAT);
-	inst->lastmeal = get_tstamp() - inst->data->starttime;
-	ft_msleep(inst->data->t_eat);
-	inst->ate++;
+	print_tstamp(philo, EAT);
+	philo->lastmeal = get_tstamp() - philo->data->starttime;
+	ft_msleep(philo->data->t_eat);
+	philo->ate++;
 
 	// leave forks
-	pthread_mutex_unlock(&inst->data->forks[inst->rfork]);
-	inst->data->st_fork[inst->rfork] = 0;
-	pthread_mutex_unlock(&inst->data->forks[inst->lfork]);
-	inst->data->st_fork[inst->lfork] = 0;
+	pthread_mutex_unlock(&philo->data->forks[philo->rfork]);
+	philo->data->st_fork[philo->rfork] = 0;
+	pthread_mutex_unlock(&philo->data->forks[philo->lfork]);
+	philo->data->st_fork[philo->lfork] = 0;
 	ft_msleep(5);
 }
 
@@ -47,38 +47,38 @@ void	*routine(void *data)
 {
 	int			i;
 	static int	id = 0;
-	t_inst		instance;
+	t_philo		philo;
 
 	i = 0;
 	id += 1;
-	instance.data = (t_main *)data;
-	instance.id = id;
-	instance.ate = 0;
-	instance.lfork = instance.id;
-	if (instance.id == instance.data->nb_philos)
-		instance.rfork = 1;
+	philo.data = (t_main *)data;
+	philo.id = id;
+	philo.ate = 0;
+	philo.lfork = philo.id;
+	if (philo.id == philo.data->nb_philos)
+		philo.rfork = 1;
 	else
-		instance.rfork = instance.id + 1;
+		philo.rfork = philo.id + 1;
 	//TODO es necesario el mutex start?
-	pthread_mutex_lock(&instance.data->start);
-	pthread_mutex_unlock(&instance.data->start);
-	while (i++ < instance.data->loops || !instance.data->loops)
+	pthread_mutex_lock(&philo.data->start);
+	pthread_mutex_unlock(&philo.data->start);
+	while (i++ < philo.data->loops || !philo.data->loops)
 	{
-		if (instance.id % 2 == 1)
+		if (philo.id % 2 == 1)
 		{
-			eat(&instance);
-			// print_tstamp(&instance, SLEEP);
-			// ft_msleep(instance.data->t_sleep);
+			eat(&philo);
+			// print_tstamp(&philo, SLEEP);
+			// ft_msleep(philo.data->t_sleep);
 		}
 		else
 		{
 			//TODO usleep solo al iniciar
 			usleep(300);
-			eat(&instance);
-			// print_tstamp(&instance, SLEEP);
-			// ft_msleep(instance.data->t_sleep);
+			eat(&philo);
+			// print_tstamp(&philo, SLEEP);
+			// ft_msleep(philo.data->t_sleep);
 		}
 	}
-	instance.data->meals += instance.ate;
+	philo.data->meals += philo.ate;
 	return (NULL);
 }

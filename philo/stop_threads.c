@@ -16,8 +16,8 @@ void	free_struct(t_main *data)
 {
 	if (data->forks)
 		free(data->forks);
-	if (data->philos)
-		free(data->philos);
+	if (data->threads)
+		free(data->threads);
 	if (data->st_fork)
 		free(data->st_fork);
 	if (data)
@@ -51,7 +51,7 @@ int	join_threads(t_main *data)
 	i = 0;
 	while (++i <= data->nb_philos)
 	{
-		if (pthread_join(data->philos[i - 1], NULL))
+		if (pthread_join(data->threads[i - 1], NULL))
 			return (perror("pthread_join"), EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);

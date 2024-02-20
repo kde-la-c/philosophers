@@ -30,7 +30,7 @@
 typedef struct s_main
 {
 	int				nb_philos;
-	pthread_t		*philos;
+	pthread_t		*threads;
 	pthread_mutex_t	*forks;
 	int				*st_fork;
 	pthread_mutex_t	start;
@@ -46,7 +46,7 @@ typedef struct s_main
 	int				meals;
 }	t_main;
 
-typedef struct s_inst
+typedef struct s_philo
 {
 	int				id;
 	int				lastmeal;
@@ -55,7 +55,7 @@ typedef struct s_inst
 	t_main			*data;
 
 	int		ate;
-}	t_inst;
+}	t_philo;
 
 /* PARSING */
 int		parsing(t_main *data, int argc, char **argv);
@@ -64,11 +64,11 @@ int		parsing(t_main *data, int argc, char **argv);
 
 /* OUTPUT */
 int		print_error(char *msg);
-void	print_tstamp(t_inst *inst, char *status);
+void	print_tstamp(t_philo *philo, char *status);
 
 /* CORE */
 int		philosophers(t_main *data);
-void	*routine(void *instance);
+void	*routine(void *philo);
 
 /* DESTROY */
 void	free_struct(t_main *data);

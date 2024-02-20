@@ -24,10 +24,10 @@ int	print_error(char *msg)
 	return (EXIT_FAILURE);
 }
 
-void	print_tstamp(t_inst *inst, char *status)
+void	print_tstamp(t_philo *philo, char *status)
 {
-	pthread_mutex_lock(&inst->data->print);
-	printf("%ims - %i %s\n", get_tstamp() - inst->data->starttime, inst->id,
+	pthread_mutex_lock(&philo->data->print);
+	printf("%ims - %i %s\n", get_tstamp() - philo->data->starttime, philo->id,
 		status);
-	pthread_mutex_unlock(&inst->data->print);
+	pthread_mutex_unlock(&philo->data->print);
 }
