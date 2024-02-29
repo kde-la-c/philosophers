@@ -69,6 +69,14 @@ void	ft_bzero(void *s, size_t n)
 	s = tmp;
 }
 
+int	get_tstamp(void)
+{
+	struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
+}
+
 void	ft_msleep(int sleeptime)
 {
 	int				orig_time;

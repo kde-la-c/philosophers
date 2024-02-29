@@ -35,7 +35,6 @@ typedef struct s_main
 	pthread_mutex_t	*forks;
 	int				*st_fork;
 	pthread_mutex_t	start;
-	int				death;
 	pthread_mutex_t	stop;
 	pthread_mutex_t	print;
 	int				t_eat;

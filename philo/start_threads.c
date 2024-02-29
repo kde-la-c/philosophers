@@ -48,14 +48,6 @@ static int	init_mutexes(t_main *data)
 	return (EXIT_SUCCESS);
 }
 
-int	get_tstamp(void)
-{
-	struct timeval	tv;
-
-	gettimeofday(&tv, NULL);
-	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
-}
-
 int	philosophers(t_main *data)
 {
 	int		i;

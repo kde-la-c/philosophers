@@ -20,7 +20,8 @@
 void	eat(t_philo *philo)
 {
 	// take forks
-	while (philo->data->st_fork[philo->lfork] || philo->data->st_fork[philo->rfork])
+	while (philo->data->st_fork[philo->lfork]
+		|| philo->data->st_fork[philo->rfork])
 		usleep(100);
 	pthread_mutex_lock(&philo->data->forks[philo->lfork]);
 	philo->data->st_fork[philo->lfork] = 1;
