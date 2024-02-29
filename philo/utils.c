@@ -12,16 +12,6 @@
 
 #include "philo.h"
 
-size_t	ft_strlen(const char *s)
-{
-	size_t	count;
-
-	count = 0;
-	while (*s++)
-		count++;
-	return (count);
-}
-
 int	ft_isdigit(int c)
 {
 	if (c >= 48 && c <= 57)

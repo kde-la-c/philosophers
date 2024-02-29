@@ -21,7 +21,7 @@ int	perror_exit(char *err)
 
 int	print_error(char *msg)
 {
-	write(2, msg, ft_strlen(msg));
+	printf("%s\n", msg);
 	return (EXIT_FAILURE);
 }
 
