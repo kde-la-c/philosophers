@@ -29,7 +29,6 @@ int	ft_isdigit(int c)
 	return (0);
 }
 
-
 void	ft_bzero(void *s, size_t n)
 {
 	unsigned long	i;
@@ -61,5 +60,5 @@ void	ft_msleep(int sleeptime)
 	gettimeofday(&tv, NULL);
 	orig_time = tv.tv_sec * 1000 + tv.tv_usec / 1000;
 	while (get_tstamp() <= orig_time + sleeptime)
-		usleep(100);
+		usleep(50);
 }
