@@ -12,13 +12,6 @@
 
 #include "philo.h"
 
-//TODO remove this before defence
-int	perror_exit(char *err)
-{
-	perror(err);
-	exit(1);
-}
-
 int	print_error(char *msg)
 {
 	printf("%s\n", msg);

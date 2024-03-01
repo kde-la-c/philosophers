@@ -47,15 +47,15 @@ typedef struct s_main
 	int		starttime;
 }	t_main;
 
-typedef struct	s_philo
+typedef struct s_philo
 {
 	int		id;
 	t_thd	*thd;
 	int		lastmeal;
 	t_mtx	*lfork;
-	int		lforkid;	// id
+	int		lforkid;
 	t_mtx	*rfork;
-	int		rforkid;	// id + 1
+	int		rforkid;
 	int		meals;
 	t_main	*data;
 }	t_philo;
@@ -63,8 +63,6 @@ typedef struct	s_philo
 /* PARSING */
 int		parsing(t_main *data, int argc, char **argv);
 int		read_args(int argc, char **argv);
-
-	int perror_exit(char *err);
 
 /* OUTPUT */
 int		print_error(char *msg);
