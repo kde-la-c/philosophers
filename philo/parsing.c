@@ -37,6 +37,42 @@ static int	ft_atoi(const char *str)
 	return (ret * sign);
 }
 
+static void	ft_bzero(void *s, size_t n)
+{
+	unsigned long	i;
+	unsigned char	*tmp;
+
+	i = 0;
+	tmp = s;
+	while (i < n)
+	{
+		tmp[i] = 0;
+		i++;
+	}
+	s = tmp;
+}
+
+static int	init_philo(t_main *data, t_philo **philos, int id)
+{
+	philos[id] = (t_philo *)malloc(sizeof(t_philo));
+	if (!philos[id])
+		return (EXIT_FAILURE);
+	ft_bzero((void *)philos[id], sizeof(t_philo));
+	philos[id]->thd = (t_thd *)malloc(sizeof(t_thd));
+	if (!philos[id]->thd)
+		return (free(philos[id]), perror("HEY"), EXIT_FAILURE);
+	philos[id]->id = id;
+	philos[id]->lforkid = id;
+	if (id == data->nb_philos)
+		philos[id]->rforkid = 1;
+	else
+		philos[id]->rforkid = id + 1;
+	philos[id]->lfork = &data->forks[philos[id]->lforkid];
+	philos[id]->rfork = &data->forks[philos[id]->rforkid];
+	philos[id]->data = data;
+	return (EXIT_SUCCESS);
+}
+
 static int	fill_structure(t_main *data, int argc, char **argv)
 {
 	int	i;
@@ -66,29 +102,9 @@ static int	fill_structure(t_main *data, int argc, char **argv)
 	return (EXIT_SUCCESS);
 }
 
-static int	init_philo(t_main *data, t_philo **philos, int id)
-{
-	philos[id] = (t_philo *)malloc(sizeof(t_philo));
-	if (!philos[id])
-		return (EXIT_FAILURE);
-	ft_bzero((void *)philos[id], sizeof(t_philo));
-	philos[id]->thd = (t_thd *)malloc(sizeof(t_thd));
-	if (!philos[id]->thd)
-		return (free(philos[id]), perror("HEY"), EXIT_FAILURE);
-	philos[id]->id = id;
-	philos[id]->lforkid = id;
-	if (id == data->nb_philos)
-		philos[id]->rforkid = 1;
-	else
-		philos[id]->rforkid = id + 1;
-	philos[id]->lfork = &data->forks[philos[id]->lforkid];
-	philos[id]->rfork = &data->forks[philos[id]->rforkid];
-	philos[id]->data = data;
-	return (EXIT_SUCCESS);
-}
-
 int	parsing(t_main *data, int argc, char **argv)
 {
+	ft_bzero((void *)data, sizeof(t_main));
 	if (read_args(argc, argv) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	if (fill_structure(data, argc, argv) == EXIT_FAILURE)

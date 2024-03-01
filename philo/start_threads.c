@@ -51,7 +51,6 @@ int	philosophers(t_main *data)
 	i = -1;
 	while (++i < data->nb_philos)
 		if (data->philos[i]->meals != data->loops)
-			return (printf("#notallmeals\n"));
-	printf("All meals taken\n");
-	return (EXIT_SUCCESS);
+			return (EXIT_FAILURE);
+	return (printf("All meals taken\n"), EXIT_SUCCESS);
 }

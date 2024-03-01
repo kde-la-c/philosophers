@@ -17,13 +17,10 @@ int	main(int argc, char **argv)
 	t_main	*data;
 
 	data = (t_main *)malloc(sizeof(t_main) * 1);
-	ft_bzero((void *)data, sizeof(t_main));
-	if (read_args(argc, argv) == EXIT_FAILURE)
-		return (free(data), print_error("Error\nInvalid input\n"));
 	if (parsing(data, argc, argv) == EXIT_FAILURE)
-		return (free(data), print_error("Error\nCouldn't initialize philos\n"));
+		return (free(data), print_error("Error\nCouldn't initialize philos"));
 	if (philosophers(data) == EXIT_FAILURE)
-		return (free_struct(data, 0), print_error("Error\n"));
+		return (free_struct(data, 0), print_error("Error"));
 	free_struct(data, 0);
 	return (EXIT_SUCCESS);
 }

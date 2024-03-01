@@ -78,8 +78,6 @@ int		dest_mutexes(t_main	*data);
 int		join_threads(t_main *data);
 
 /* UTILS */
-int		ft_isdigit(int c);
-void	ft_bzero(void *s, size_t n);
 int		get_tstamp(void);
 void	ft_msleep(int sleeptime);
 

@@ -12,28 +12,6 @@
 
 #include "philo.h"
 
-int	ft_isdigit(int c)
-{
-	if (c >= 48 && c <= 57)
-		return (1);
-	return (0);
-}
-
-void	ft_bzero(void *s, size_t n)
-{
-	unsigned long	i;
-	unsigned char	*tmp;
-
-	i = 0;
-	tmp = s;
-	while (i < n)
-	{
-		tmp[i] = 0;
-		i++;
-	}
-	s = tmp;
-}
-
 int	get_tstamp(void)
 {
 	struct timeval	tv;

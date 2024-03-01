@@ -12,6 +12,13 @@
 
 #include "philo.h"
 
+static int	ft_isdigit(int c)
+{
+	if (c >= 48 && c <= 57)
+		return (1);
+	return (0);
+}
+
 int	read_args(int argc, char **argv)
 {
 	int	i;

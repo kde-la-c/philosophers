@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
-void	eat(t_philo *philo)
+static void	eat(t_philo *philo)
 {
 	// take forks
 	// while (philo->data->st_fork[philo->lforkid]
