@@ -49,6 +49,6 @@ void	ft_msleep(int sleeptime)
 
 	gettimeofday(&tv, NULL);
 	orig_time = tv.tv_sec * 1000 + tv.tv_usec / 1000;
-	while (get_tstamp() <= orig_time + sleeptime)
+	while (get_tstamp() < orig_time + sleeptime)
 		usleep(50);
 }

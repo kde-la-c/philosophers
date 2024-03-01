@@ -36,7 +36,6 @@ int	philosophers(t_main *data)
 {
 	int		i;
 
-	//TODO init instances here
 	if (init_mutexes(data) == EXIT_FAILURE)
 		return (perror("init_mutexes"), EXIT_FAILURE);
 	pthread_mutex_lock(&data->start);
