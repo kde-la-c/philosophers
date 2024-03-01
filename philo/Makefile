@@ -14,6 +14,7 @@ NAME		= philo
 NAME_DBG	= dbg
 SRC			= philo.c \
 			input.c \
+			parsing.c \
 			utils.c \
 			output.c \
 			start_threads.c \

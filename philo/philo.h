@@ -27,38 +27,42 @@
 # define THINK		3
 # define DIE		4
 
+typedef pthread_mutex_t	t_mtx;
+typedef pthread_t		t_thd;
+typedef struct s_philo	t_philo;
+
 typedef struct s_main
 {
-	//TODO add t_philo array here
-	int				nb_philos;
-	pthread_t		*thds;
-	pthread_mutex_t	*forks;
-	int				*st_fork;
-	pthread_mutex_t	start;
-	pthread_mutex_t	stop;
-	pthread_mutex_t	print;
-	int				t_eat;
-	int				t_sleep;
-	int				t_death;
-	int				loops;
-	int				starttime;
-
-	int				meals;
+	int		nb_philos;
+	t_philo	**philos;
+	t_mtx	*forks;
+	int		*st_fork;
+	t_mtx	start;
+	t_mtx	stop;
+	t_mtx	print;
+	int		t_eat;
+	int		t_sleep;
+	int		t_death;
+	int		loops;
+	int		starttime;
 }	t_main;
 
-typedef struct s_philo
+typedef struct	s_philo
 {
-	int				id;
-	int				lastmeal;
-	int				rfork;
-	int				lfork;
-	t_main			*data;
-
-	int		ate;
+	int		id;
+	t_thd	*thd;
+	int		lastmeal;
+	t_mtx	*lfork;
+	int		lforkid;	// id
+	t_mtx	*rfork;
+	int		rforkid;	// id + 1
+	int		meals;
+	t_main	*data;
 }	t_philo;
 
 /* PARSING */
 int		parsing(t_main *data, int argc, char **argv);
+int		read_args(int argc, char **argv);
 
 	int perror_exit(char *err);
 
@@ -71,13 +75,12 @@ int		philosophers(t_main *data);
 void	*routine(void *philo);
 
 /* DESTROY */
-void	free_struct(t_main *data);
+void	free_struct(t_main *data, int i);
 int		dest_mutexes(t_main	*data);
 int		join_threads(t_main *data);
 
 /* UTILS */
 int		ft_isdigit(int c);
-size_t	ft_strlen(const char *s);
 void	ft_bzero(void *s, size_t n);
 int		get_tstamp(void);
 void	ft_msleep(int sleeptime);

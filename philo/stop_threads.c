@@ -12,16 +12,21 @@
 
 #include "philo.h"
 
-void	free_struct(t_main *data)
+void	free_struct(t_main *data, int i)
 {
 	if (data->forks)
 		free(data->forks);
-	if (data->thds)
-		free(data->thds);
 	if (data->st_fork)
 		free(data->st_fork);
-	if (data)
-		free(data);
+	if (data->philos && i)
+	{
+		while (--i)
+		{
+			if (data->philos[i]->thd)
+				free(data->philos[i]->thd);
+			free(data->philos[i]);
+		}
+	}
 }
 
 int	dest_mutexes(t_main	*data)
@@ -49,10 +54,11 @@ int	join_threads(t_main *data)
 	int	i;
 
 	i = 0;
-	while (++i <= data->nb_philos)
+	while (i < data->nb_philos)
 	{
-		if (pthread_join(data->thds[i - 1], NULL))
+		if (pthread_join(*data->philos[i]->thd, NULL))
 			return (perror("pthread_join"), EXIT_FAILURE);
+		i++;
 	}
 	return (EXIT_SUCCESS);
 }

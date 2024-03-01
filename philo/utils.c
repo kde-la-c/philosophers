@@ -12,23 +12,12 @@
 
 #include "philo.h"
 
-size_t	ft_strlen(const char *s)
-{
-	size_t	count;
-
-	count = 0;
-	while (*s++)
-		count++;
-	return (count);
-}
-
 int	ft_isdigit(int c)
 {
 	if (c >= 48 && c <= 57)
 		return (1);
 	return (0);
 }
-
 
 void	ft_bzero(void *s, size_t n)
 {
@@ -61,5 +50,5 @@ void	ft_msleep(int sleeptime)
 	gettimeofday(&tv, NULL);
 	orig_time = tv.tv_sec * 1000 + tv.tv_usec / 1000;
 	while (get_tstamp() <= orig_time + sleeptime)
-		usleep(100);
+		usleep(50);
 }

@@ -18,10 +18,12 @@ int	main(int argc, char **argv)
 
 	data = (t_main *)malloc(sizeof(t_main) * 1);
 	ft_bzero((void *)data, sizeof(t_main));
+	if (read_args(argc, argv) == EXIT_FAILURE)
+		return (free(data), print_error("Error\nInvalid input\n"));
 	if (parsing(data, argc, argv) == EXIT_FAILURE)
-		return (print_error("Error\nInvalid input\n"));
+		return (free(data), print_error("Error\nCouldn't initialize philos\n"));
 	if (philosophers(data) == EXIT_FAILURE)
-		return (print_error("Error\n"));
-	free_struct(data);
+		return (free_struct(data, 0), print_error("Error\n"));
+	free_struct(data, 0);
 	return (EXIT_SUCCESS);
 }
