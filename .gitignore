@@ -20,4 +20,5 @@ dbg*
 *.dSYM
 test*
 
+./vscode
 */philo

@@ -54,6 +54,5 @@ void	*routine(void *data)
 		eat(philo);
 		ft_msleep(philo->data->t_sleep);
 	}
-	philo->data->meals += philo->meals;
 	return (NULL);
 }

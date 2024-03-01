@@ -33,7 +33,6 @@ typedef struct s_philo	t_philo;
 
 typedef struct s_main
 {
-	//TODO add t_philo array here
 	int		nb_philos;
 	t_philo	**philos;
 	t_mtx	*forks;
@@ -46,8 +45,6 @@ typedef struct s_main
 	int		t_death;
 	int		loops;
 	int		starttime;
-
-	int		meals;
 }	t_main;
 
 typedef struct	s_philo
