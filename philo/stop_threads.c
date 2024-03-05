@@ -20,12 +20,13 @@ void	free_struct(t_main *data, int i)
 		free(data->st_fork);
 	if (data->philos && i)
 	{
-		while (--i)
+		while (--i >= 0)
 		{
 			if (data->philos[i]->thd)
 				free(data->philos[i]->thd);
 			free(data->philos[i]);
 		}
+		free(data->philos);
 	}
 }
 

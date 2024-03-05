@@ -61,7 +61,7 @@ static int	init_philo(t_main *data, t_philo **philos, int id)
 	philos[id]->thd = (t_thd *)malloc(sizeof(t_thd));
 	if (!philos[id]->thd)
 		return (free(philos[id]), perror("HEY"), EXIT_FAILURE);
-	philos[id]->id = id;
+	philos[id]->id = id + 1;
 	philos[id]->lforkid = id;
 	if (id == data->nb_philos)
 		philos[id]->rforkid = 1;

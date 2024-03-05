@@ -21,6 +21,6 @@ int	main(int argc, char **argv)
 		return (free(data), print_error("Error\nCouldn't initialize philos"));
 	if (philosophers(data) == EXIT_FAILURE)
 		return (free_struct(data, 0), print_error("Error"));
-	free_struct(data, 0);
+	free_struct(data, data->nb_philos);
 	return (EXIT_SUCCESS);
 }

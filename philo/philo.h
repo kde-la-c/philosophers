@@ -27,6 +27,8 @@
 # define THINK		3
 # define DIE		4
 
+# define STATUS		"%i %i %s\n"
+
 typedef pthread_mutex_t	t_mtx;
 typedef pthread_t		t_thd;
 typedef struct s_philo	t_philo;
