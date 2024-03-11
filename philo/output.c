@@ -34,7 +34,13 @@ void	print_tstamp(t_philo *philo, int status)
 		printf(STATUS, get_tstamp() - philo->data->starttime,
 			philo->id, "is thinking");
 	else if (status == DIE)
+	{
 		printf(STATUS, get_tstamp() - philo->data->starttime,
 			philo->id, "died");
+		return ;
+	}
+	else if (status == FINISH)
+		printf(STATUS, get_tstamp() - philo->data->starttime,
+			philo->id, "finished eating");
 	pthread_mutex_unlock(&philo->data->print);
 }

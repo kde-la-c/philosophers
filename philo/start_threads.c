@@ -32,6 +32,35 @@ static int	init_mutexes(t_main *data)
 	return (EXIT_SUCCESS);
 }
 
+static int	everyonesatisfied(t_main *data)
+{
+	int	i;
+
+	i = -1;
+	while (++i < data->nb_philos)
+		if (data->philos[i]->meals != data->loops)
+			return (EXIT_FAILURE);
+	return (printf("All meals taken\n"), EXIT_SUCCESS);
+}
+
+static int	areyouguysok(t_main *data)
+{
+	while (everyonesatisfied(data) == EXIT_FAILURE)
+	{
+		pthread_mutex_lock(&data->stop);
+		if (data->dead)
+		{
+			print_tstamp(data->philos[data->dead - 1], DIE);
+			pthread_mutex_unlock(&data->stop);
+			return (EXIT_FAILURE);
+		}
+		else
+			pthread_mutex_unlock(&data->stop);
+		usleep(100);
+	}
+	return (EXIT_SUCCESS);
+}
+
 int	philosophers(t_main *data)
 {
 	int		i;
@@ -46,11 +75,13 @@ int	philosophers(t_main *data)
 			return (perror("pthread_create_philos"), EXIT_FAILURE);
 	data->starttime = get_tstamp();
 	pthread_mutex_unlock(&data->start);
+	if (areyouguysok(data) == EXIT_FAILURE)
+	{
+		join_threads(data);
+		dest_mutexes(data);
+		return (EXIT_FAILURE + (1 && data->dead));
+	}
 	join_threads(data);
 	dest_mutexes(data);
-	i = -1;
-	while (++i < data->nb_philos)
-		if (data->philos[i]->meals != data->loops)
-			return (EXIT_FAILURE);
-	return (printf("All meals taken\n"), EXIT_SUCCESS);
+	return (EXIT_SUCCESS);
 }

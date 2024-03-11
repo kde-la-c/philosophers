@@ -12,30 +12,47 @@
 
 #include "philo.h"
 
-static void	eat(t_philo *philo)
+/* static int	brodonteat(t_philo *philo)
+{
+	int	now;
+
+	now = get_tstamp() - philo->data->starttime;
+	if (philo->meals)
+		if ()
+} */
+
+static int	eat(t_philo *philo)
 {
 	// take forks
-	// while (philo->data->st_fork[philo->lforkid]
-	// 	|| philo->data->st_fork[philo->rforkid])
-	// 		usleep(100);
-	pthread_mutex_lock(&philo->data->forks[philo->lforkid]);
-	// philo->data->st_fork[philo->lforkid] = 1;
+
+	// printf("tstamp: %i, lastmeal+t_death: %i", get_tstamp(), philo->lastmeal + philo->data->t_death);
+	if ((!philo->meals && (get_tstamp() - philo->data->starttime) > philo->data->t_death)
+		|| (philo->meals && (get_tstamp() - philo->data->starttime) > philo->lastmeal + philo->data->t_death))
+	{
+		pthread_mutex_lock(&philo->data->stop);
+		philo->data->dead = philo->id;
+		pthread_mutex_unlock(&philo->data->stop);
+		return (EXIT_FAILURE);
+	}
+	if (pthread_mutex_lock(&philo->data->forks[philo->lforkid]))
+		return (EXIT_FAILURE);
 	print_tstamp(philo, TAKE_FORK);
-	pthread_mutex_lock(&philo->data->forks[philo->rforkid]);
-	// philo->data->st_fork[philo->rforkid] = 1;
+	if (pthread_mutex_lock(&philo->data->forks[philo->rforkid]))
+		return (EXIT_FAILURE);
 	print_tstamp(philo, TAKE_FORK);
 
 	// eat
-	print_tstamp(philo, EAT);
 	philo->lastmeal = get_tstamp() - philo->data->starttime;
+	print_tstamp(philo, EAT);
 	ft_msleep(philo->data->t_eat);
 	philo->meals++;
+	// print_tstamp(philo, FINISH);
 
 	// leave forks
 	pthread_mutex_unlock(&philo->data->forks[philo->rforkid]);
-	// philo->data->st_fork[philo->rforkid] = 0;
 	pthread_mutex_unlock(&philo->data->forks[philo->lforkid]);
-	// philo->data->st_fork[philo->lforkid] = 0;
+
+	return (EXIT_SUCCESS);
 }
 
 void	*routine(void *data)
@@ -51,7 +68,12 @@ void	*routine(void *data)
 		usleep(50);
 	while (i++ < philo->data->loops || !philo->data->loops)
 	{
-		eat(philo);
+		if (eat(philo) == EXIT_FAILURE)
+		{
+			if (!philo->data->dead)
+				philo->data->dead = philo->id;
+			return (NULL);
+		}
 		ft_msleep(philo->data->t_sleep);
 	}
 	return (NULL);

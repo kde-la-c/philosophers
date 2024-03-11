@@ -14,13 +14,17 @@
 
 int	main(int argc, char **argv)
 {
+	int		err;
 	t_main	*data;
 
 	data = (t_main *)malloc(sizeof(t_main) * 1);
 	if (parsing(data, argc, argv) == EXIT_FAILURE)
 		return (free(data), print_error("Error\nCouldn't initialize philos"));
-	if (philosophers(data) == EXIT_FAILURE)
+	err = philosophers(data);
+	if (err == EXIT_FAILURE)
 		return (free_struct(data, 0), print_error("Error"));
+	else if (err == 2)
+		return (free_struct(data, 0), EXIT_FAILURE);
 	free_struct(data, data->nb_philos);
 	return (EXIT_SUCCESS);
 }

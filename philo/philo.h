@@ -26,6 +26,7 @@
 # define SLEEP		2
 # define THINK		3
 # define DIE		4
+# define FINISH		5
 
 # define STATUS		"%i %i %s\n"
 
@@ -47,6 +48,7 @@ typedef struct s_main
 	int		t_death;
 	int		loops;
 	int		starttime;
+	int		dead;
 }	t_main;
 
 typedef struct s_philo

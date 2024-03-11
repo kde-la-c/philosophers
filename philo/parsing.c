@@ -77,11 +77,12 @@ static int	fill_structure(t_main *data, int argc, char **argv)
 {
 	int	i;
 
-	i = 0;
+	i = -1;
 	data->nb_philos = ft_atoi(argv[1]);
 	data->t_death = ft_atoi(argv[2]);
 	data->t_eat = ft_atoi(argv[3]);
 	data->t_sleep = ft_atoi(argv[4]);
+	data->dead = 0;
 	if (argc == 6)
 		data->loops = ft_atoi(argv[5]);
 	data->forks = (t_mtx *)malloc(sizeof(t_mtx) * data->nb_philos);
@@ -93,12 +94,9 @@ static int	fill_structure(t_main *data, int argc, char **argv)
 	data->philos = (t_philo **)malloc(sizeof(t_philo *) * data->nb_philos);
 	if (!data->philos)
 		return (free_struct(data, 0), EXIT_FAILURE);
-	while (i < data->nb_philos)
-	{
+	while (++i < data->nb_philos)
 		if (init_philo(data, data->philos, i) == EXIT_FAILURE)
 			return (free_struct(data, i), EXIT_FAILURE);
-		i++;
-	}
 	return (EXIT_SUCCESS);
 }
 
