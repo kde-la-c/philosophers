@@ -12,6 +12,11 @@
 
 #include "philo.h"
 
+int	now(t_main *data)
+{
+	return (get_tstamp() - data->starttime);
+}
+
 int	get_tstamp(void)
 {
 	struct timeval	tv;

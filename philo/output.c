@@ -22,25 +22,19 @@ void	print_tstamp(t_philo *philo, int status)
 {
 	pthread_mutex_lock(&philo->data->print);
 	if (status == TAKE_FORK)
-		printf(STATUS, get_tstamp() - philo->data->starttime,
-			philo->id, "has taken a fork");
+		printf(STATUS, now(philo->data), philo->id, "has taken a fork");
 	else if (status == EAT)
-		printf(STATUS, get_tstamp() - philo->data->starttime,
-			philo->id, "is eating");
+		printf(STATUS, now(philo->data), philo->id, "is eating");
 	else if (status == SLEEP)
-		printf(STATUS, get_tstamp() - philo->data->starttime,
-			philo->id, "is sleeping");
+		printf(STATUS, now(philo->data), philo->id, "is sleeping");
 	else if (status == THINK)
-		printf(STATUS, get_tstamp() - philo->data->starttime,
-			philo->id, "is thinking");
+		printf(STATUS, now(philo->data), philo->id, "is thinking");
 	else if (status == DIE)
 	{
-		printf(STATUS, get_tstamp() - philo->data->starttime,
-			philo->id, "died");
+		printf(STATUS, now(philo->data), philo->id, "died");
 		return ;
 	}
 	else if (status == FINISH)
-		printf(STATUS, get_tstamp() - philo->data->starttime,
-			philo->id, "finished eating");
+		printf(STATUS, now(philo->data), philo->id, "finished eating");
 	pthread_mutex_unlock(&philo->data->print);
 }

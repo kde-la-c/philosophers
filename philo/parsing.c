@@ -63,8 +63,8 @@ static int	init_philo(t_main *data, t_philo **philos, int id)
 		return (free(philos[id]), perror("HEY"), EXIT_FAILURE);
 	philos[id]->id = id + 1;
 	philos[id]->lforkid = id;
-	if (id == data->nb_philos)
-		philos[id]->rforkid = 1;
+	if (id + 1 == data->nb_philos)
+		philos[id]->rforkid = 0;
 	else
 		philos[id]->rforkid = id + 1;
 	philos[id]->lfork = &data->forks[philos[id]->lforkid];

@@ -48,9 +48,14 @@ static int	areyouguysok(t_main *data)
 	while (everyonesatisfied(data) == EXIT_FAILURE)
 	{
 		pthread_mutex_lock(&data->stop);
-		if (data->dead)
+		if (data->dead > 0)
 		{
 			print_tstamp(data->philos[data->dead - 1], DIE);
+			pthread_mutex_unlock(&data->stop);
+			return (EXIT_FAILURE);
+		}
+		else if (data->dead == -1)
+		{
 			pthread_mutex_unlock(&data->stop);
 			return (EXIT_FAILURE);
 		}
@@ -75,7 +80,8 @@ int	philosophers(t_main *data)
 			return (perror("pthread_create_philos"), EXIT_FAILURE);
 	data->starttime = get_tstamp();
 	pthread_mutex_unlock(&data->start);
-	if (areyouguysok(data) == EXIT_FAILURE)
+	i = areyouguysok(data);
+	if (i == EXIT_FAILURE)
 	{
 		join_threads(data);
 		dest_mutexes(data);
