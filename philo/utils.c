@@ -25,7 +25,7 @@ int	get_tstamp(void)
 	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
 }
 
-void	ft_msleep(int sleeptime)
+void	ft_msleep(t_philo *phi, int sleeptime)
 {
 	int				orig_time;
 	struct timeval	tv;
@@ -33,5 +33,15 @@ void	ft_msleep(int sleeptime)
 	gettimeofday(&tv, NULL);
 	orig_time = tv.tv_sec * 1000 + tv.tv_usec / 1000;
 	while (get_tstamp() < orig_time + sleeptime)
+	{
+		if ((!phi->meals && now(phi->data) > phi->data->t_death)
+		|| (phi->meals && now(phi->data) > phi->lastmeal + phi->data->t_death))
+		{
+			pthread_mutex_lock(&phi->data->stop);
+			phi->data->dead = phi->id;
+			pthread_mutex_unlock(&phi->data->stop);
+			return ;
+		}
 		usleep(50);
+	}
 }

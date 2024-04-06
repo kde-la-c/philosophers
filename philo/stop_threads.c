@@ -57,7 +57,8 @@ int	join_threads(t_main *data)
 	i = 0;
 	while (i < data->nb_philos)
 	{
-		if (pthread_join(*data->philos[i]->thd, NULL))
+		if (pthread_detach(*data->philos[i]->thd))
+		// if (pthread_join(*data->philos[i]->thd, NULL))
 			return (perror("pthread_join"), EXIT_FAILURE);
 		i++;
 	}

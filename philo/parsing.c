@@ -106,6 +106,6 @@ int	parsing(t_main *data, int argc, char **argv)
 	if (read_args(argc, argv) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	if (fill_structure(data, argc, argv) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
+		return (EXIT_FAILURE + 1);
 	return (EXIT_SUCCESS);
 }

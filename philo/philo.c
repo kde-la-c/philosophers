@@ -19,6 +19,8 @@ int	main(int argc, char **argv)
 
 	data = (t_main *)malloc(sizeof(t_main) * 1);
 	if (parsing(data, argc, argv) == EXIT_FAILURE)
+		return (print_error("Error\nbad arguments"));
+	else if (parsing(data, argc, argv) == EXIT_FAILURE + 1)
 		return (free(data), print_error("Error\nCouldn't initialize philos"));
 	err = philosophers(data);
 	if (err == EXIT_FAILURE)

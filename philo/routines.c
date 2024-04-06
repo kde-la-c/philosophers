@@ -12,39 +12,45 @@
 
 #include "philo.h"
 
-/* static int	brodonteat(t_philo *philo)
+static int	take_forks(t_philo *phi, t_mtx *fork1, t_mtx *fork2)
 {
-	int	now;
-
-	now = now(philo->data);
-	if (philo->meals)
-		if ()
-} */
+	if (pthread_mutex_lock(fork1))
+		return (perror("lock"), EXIT_FAILURE);
+	print_tstamp(phi, TAKE_FORK);
+	if (pthread_mutex_lock(fork2))
+		return (perror("lock"), EXIT_FAILURE);
+	print_tstamp(phi, TAKE_FORK);
+	return (EXIT_SUCCESS);
+}
 
 static int	eat(t_philo *phi)
 {
 	// take forks
 
-	if ((!phi->meals && now(phi->data) > phi->data->t_death)
-		|| (phi->meals && now(phi->data) > phi->lastmeal + phi->data->t_death))
-	{
-		pthread_mutex_lock(&phi->data->stop);
-		phi->data->dead = phi->id;
-		pthread_mutex_unlock(&phi->data->stop);
-		return (EXIT_FAILURE);
-	}
-	if (pthread_mutex_lock(&phi->data->forks[phi->lforkid]))
-		perror("lock");
-	print_tstamp(phi, TAKE_FORK);
-	if (pthread_mutex_lock(&phi->data->forks[phi->rforkid]))
-		perror("lock");
-	print_tstamp(phi, TAKE_FORK);
-
+	// if ((!phi->meals && now(phi->data) > phi->data->t_death)
+	// 	|| (phi->meals && now(phi->data) > phi->lastmeal + phi->data->t_death))
+	// {
+	// 	pthread_mutex_lock(&phi->data->stop);
+	// 	phi->data->dead = phi->id;
+	// 	pthread_mutex_unlock(&phi->data->stop);
+	// 	return (EXIT_FAILURE);
+	// }
+	if (phi->id % 2)
+		take_forks(phi, phi->lfork, phi->rfork);
+	else
+		take_forks(phi, phi->rfork, phi->lfork);
+	// if (pthread_mutex_lock(&phi->lfork))
+	// 	perror("lock");
+	// print_tstamp(phi, TAKE_FORK);
+	// if (pthread_mutex_lock(&phi->rfork))
+	// 	perror("lock");
+	// print_tstamp(phi, TAKE_FORK);
+	
 	// eat
 	phi->lastmeal = now(phi->data);
 	// printf("%i meals - ", phi->meals);
 	print_tstamp(phi, EAT);
-	ft_msleep(phi->data->t_eat);
+	ft_msleep(phi, phi->data->t_eat);
 	phi->meals++;
 	// print_tstamp(phi, FINISH);
 
@@ -71,13 +77,20 @@ void	*routine(void *data)
 	{
 		j = eat(philo);
 		if (j == EXIT_FAILURE)
+		{
+			dprintf(2, "return\n");
 			return (NULL);
+		}
 		else if (j == 2)
 		{
 			philo->data->dead = -1;
+			dprintf(2, "return\n");
 			return (NULL);
 		}
-		ft_msleep(philo->data->t_sleep);
+		dprintf(2, "bucle\n");
+		ft_msleep(philo, philo->data->t_sleep);
+		dprintf(2, "after\n");
 	}
+	dprintf(2, "return\n");
 	return (NULL);
 }

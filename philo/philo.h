@@ -83,7 +83,7 @@ int		join_threads(t_main *data);
 
 /* UTILS */
 int		get_tstamp(void);
-void	ft_msleep(int sleeptime);
+void	ft_msleep(t_philo *philo, int sleeptime);
 int		now(t_main *data);
 
 #endif
