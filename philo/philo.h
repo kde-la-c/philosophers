@@ -21,14 +21,28 @@
 # include <pthread.h>
 # include <errno.h>
 
-# define STATUS		"%i %i %s\n"
+typedef enum e_action
+{
+	TAKE_FORK,
+	EAT,
+	SLEEP,
+	THINK,
+	DIE,
+	FINISH
+}	t_action;
 
-# define TAKE_FORK	0
-# define EAT		1
-# define SLEEP		2
-# define THINK		3
-# define DIE		4
-# define FINISH		5
+typedef enum e_errno
+{
+	SUCCESS,
+	ERR_FAILURE,
+	ERR_ALLOC,
+	ERR_ARGS,
+	ERR_MTX_INIT,
+	ERR_THD_INIT,
+	MSG_DEATH
+}	t_errno;
+
+# define STATUS		"%i %i %s\n"
 
 typedef pthread_mutex_t	t_mtx;
 typedef pthread_t		t_thd;
@@ -70,7 +84,7 @@ int		parsing(t_main *data, int argc, char **argv);
 int		read_args(int argc, char **argv);
 
 /* OUTPUT */
-int		print_error(char *msg);
+int		print_errno(int	retno);
 void	print_tstamp(t_philo *philo, int status);
 
 /* CORE */

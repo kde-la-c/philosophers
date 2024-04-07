@@ -20,16 +20,16 @@ static int	init_mutexes(t_main *data)
 	while (i < data->nb_philos)
 	{
 		if (pthread_mutex_init(&(data->forks[i]), NULL))
-			return (EXIT_FAILURE);
+			return (ERR_MTX_INIT);
 		i++;
 	}
 	if (pthread_mutex_init(&data->start, NULL))
-		return (EXIT_FAILURE);
+		return (ERR_MTX_INIT);
 	if (pthread_mutex_init(&data->stop, NULL))
-		return (EXIT_FAILURE);
+		return (ERR_MTX_INIT);
 	if (pthread_mutex_init(&data->print, NULL))
-		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
+		return (ERR_MTX_INIT);
+	return (SUCCESS);
 }
 
 static int	everyonesatisfied(t_main *data)
@@ -39,49 +39,44 @@ static int	everyonesatisfied(t_main *data)
 	i = -1;
 	while (++i < data->nb_philos)
 		if (data->philos[i]->meals != data->loops || !data->loops)
-			return (EXIT_FAILURE);
-	return (printf("All meals taken\n"), EXIT_SUCCESS);
+			return (ERR_FAILURE);
+	return (SUCCESS);
 }
 
 static int	areyouguysok(t_main *data)
 {
-	while (everyonesatisfied(data) == EXIT_FAILURE)
+	while (everyonesatisfied(data))
 	{
 		pthread_mutex_lock(&data->stop);
 		if (data->dead > 0)
 		{
 			print_tstamp(data->philos[data->dead - 1], DIE);
 			pthread_mutex_unlock(&data->stop);
-			return (EXIT_FAILURE);
-		}
-		else if (data->dead == -1)
-		{
-			pthread_mutex_unlock(&data->stop);
-			return (EXIT_FAILURE);
+			return (MSG_DEATH);
 		}
 		else
 			pthread_mutex_unlock(&data->stop);
 		usleep(100);
 	}
-	return (EXIT_SUCCESS);
+	return (SUCCESS);
 }
 
 int	philosophers(t_main *data)
 {
 	int		i;
 
-	if (init_mutexes(data) == EXIT_FAILURE)
-		return (print_error("init_mutexes"), EXIT_FAILURE);
+	if (init_mutexes(data))
+		return (ERR_MTX_INIT);
 	pthread_mutex_lock(&data->start);
 	i = -1;
 	while (++i < data->nb_philos)
 		if (pthread_create(data->philos[i]->thd, NULL, routine,
 				(void *)data->philos[i]))
-			return (print_error("pthread_create_philos"), EXIT_FAILURE);
+			return (ERR_THD_INIT);
 	data->starttime = get_tstamp();
 	pthread_mutex_unlock(&data->start);
 	i = areyouguysok(data);
 	join_threads(data);
 	dest_mutexes(data);
-	return (i + (i && data->dead));
+	return (i);
 }

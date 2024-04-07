@@ -12,10 +12,32 @@
 
 #include "philo.h"
 
-int	print_error(char *msg)
+int	ft_putendl_fd(char *s, int fd)
 {
-	printf("%s\n", msg);
-	return (EXIT_FAILURE);
+	int	ret;
+
+	ret = 0;
+	while (*s)
+		ret += write(fd, s++, 1);
+	ret += write(fd, "\n", 1);
+	return (ret);
+}
+
+int	print_errno(int	retno)
+{
+	if (!retno)
+		ft_putendl_fd("All meals taken!", 1);
+	else if (retno != MSG_DEATH)
+		ft_putendl_fd("Error", 2);
+	if (retno == ERR_ALLOC)
+		ft_putendl_fd("Memory allocation problem", 2);
+	else if (retno == ERR_ARGS)
+		ft_putendl_fd("Bad arguments", 2);
+	else if (retno == ERR_MTX_INIT)
+		ft_putendl_fd("Bad mutex initialization", 2);
+	else if (retno == ERR_THD_INIT)
+		ft_putendl_fd("Bad thread initialization", 2);
+	return (retno);
 }
 
 void	print_tstamp(t_philo *philo, int status)

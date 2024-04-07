@@ -18,15 +18,11 @@ int	main(int argc, char **argv)
 	t_main	*data;
 
 	data = (t_main *)malloc(sizeof(t_main) * 1);
-	if (parsing(data, argc, argv) == EXIT_FAILURE)
-		return (print_error("Error\nbad arguments"));
-	else if (parsing(data, argc, argv) == EXIT_FAILURE + 1)
-		return (free(data), print_error("Error\nCouldn't initialize philos"));
+	ret = parsing(data, argc, argv);
+	if (ret)
+		return (print_errno(ret));
 	ret = philosophers(data);
-	if (ret == EXIT_FAILURE)
-		return (free_struct(data, 0), print_error("Error"));
-	else if (ret == 2)
-		return (free_struct(data, 0), EXIT_FAILURE);
+	print_errno(ret);
 	free_struct(data, data->nb_philos);
-	return (EXIT_SUCCESS);
+	return (SUCCESS);
 }

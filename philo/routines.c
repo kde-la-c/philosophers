@@ -16,15 +16,15 @@ static int	take_forks(t_philo *phi, t_mtx *fork1, t_mtx *fork2)
 {
 	pthread_mutex_lock(fork1);
 	// if (pthread_mutex_lock(fork1))
-	// 	return (perror("lock1"), EXIT_FAILURE);
+	// 	return (perror("lock1"), ERR_FAILURE);
 	print_tstamp(phi, TAKE_FORK);
 	if (phi->data->nb_philos == 1)
-		return (EXIT_FAILURE);
+		return (ERR_FAILURE);
 	pthread_mutex_lock(fork2);
 	// if (pthread_mutex_lock(fork2))
-	// 	return (perror("lock2"), EXIT_FAILURE);
+	// 	return (perror("lock2"), ERR_FAILURE);
 	print_tstamp(phi, TAKE_FORK);
-	return (EXIT_SUCCESS);
+	return (SUCCESS);
 }
 
 static int	eat(t_philo *phi)
@@ -40,7 +40,7 @@ static int	eat(t_philo *phi)
 	if (ret)
 	{
 		ft_msleep(phi, phi->data->t_death);
-		return (EXIT_FAILURE);
+		return (ERR_FAILURE);
 	}
 	phi->lastmeal = now(phi->data);
 	// printf("%i meals - ", phi->meals);
@@ -53,7 +53,7 @@ static int	eat(t_philo *phi)
 	pthread_mutex_unlock(&phi->data->forks[phi->rforkid]);
 	pthread_mutex_unlock(&phi->data->forks[phi->lforkid]);
 
-	return (EXIT_SUCCESS);
+	return (SUCCESS);
 }
 
 void	*routine(void *data)
@@ -71,14 +71,8 @@ void	*routine(void *data)
 	while (i++ < philo->data->loops || !philo->data->loops)
 	{
 		j = eat(philo);
-		if (j == EXIT_FAILURE)
+		if (j == ERR_FAILURE)
 		{
-			// dprintf(2, "return\n");
-			return (NULL);
-		}
-		else if (j == 2)
-		{
-			philo->data->dead = -1;
 			// dprintf(2, "return\n");
 			return (NULL);
 		}

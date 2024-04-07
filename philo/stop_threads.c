@@ -37,17 +37,17 @@ int	dest_mutexes(t_main	*data)
 	i = 0;
 	while (i < data->nb_philos)
 	{
-		if (pthread_mutex_destroy(&(data->forks[i])) == EXIT_FAILURE)
-			return (EXIT_FAILURE);
+		if (pthread_mutex_destroy(&(data->forks[i])) == ERR_FAILURE)
+			return (ERR_FAILURE);
 		i++;
 	}
-	if (pthread_mutex_destroy(&data->start) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
-	if (pthread_mutex_destroy(&data->stop) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
-	if (pthread_mutex_destroy(&data->print) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
+	if (pthread_mutex_destroy(&data->start) == ERR_FAILURE)
+		return (ERR_FAILURE);
+	if (pthread_mutex_destroy(&data->stop) == ERR_FAILURE)
+		return (ERR_FAILURE);
+	if (pthread_mutex_destroy(&data->print) == ERR_FAILURE)
+		return (ERR_FAILURE);
+	return (SUCCESS);
 }
 
 int	join_threads(t_main *data)
@@ -58,9 +58,8 @@ int	join_threads(t_main *data)
 	while (i < data->nb_philos)
 	{
 		if (pthread_detach(*data->philos[i]->thd))
-		// if (pthread_join(*data->philos[i]->thd, NULL))
-			return (perror("pthread_join"), EXIT_FAILURE);
+			return (ERR_FAILURE);
 		i++;
 	}
-	return (EXIT_SUCCESS);
+	return (SUCCESS);
 }

@@ -27,16 +27,16 @@ int	read_args(int argc, char **argv)
 	i = 1;
 	j = 0;
 	if (argc < 5 || argc > 6)
-		return (EXIT_FAILURE);
+		return (ERR_FAILURE);
 	while (argv[i])
 	{
 		j = 0;
 		while (argv[i][j])
 			if (!ft_isdigit(argv[i][j++]))
-				return (EXIT_FAILURE);
+				return (ERR_FAILURE);
 		if (ft_atoi(argv[i]) < 1)
-			return (EXIT_FAILURE);
+			return (ERR_FAILURE);
 		i++;
 	}
-	return (EXIT_SUCCESS);
+	return (SUCCESS);
 }

@@ -56,11 +56,11 @@ static int	init_philo(t_main *data, t_philo **philos, int id)
 {
 	philos[id] = (t_philo *)malloc(sizeof(t_philo));
 	if (!philos[id])
-		return (EXIT_FAILURE);
+		return (ERR_FAILURE);
 	ft_bzero((void *)philos[id], sizeof(t_philo));
 	philos[id]->thd = (t_thd *)malloc(sizeof(t_thd));
 	if (!philos[id]->thd)
-		return (free(philos[id]), EXIT_FAILURE);
+		return (free(philos[id]), ERR_FAILURE);
 	philos[id]->id = id + 1;
 	philos[id]->lforkid = id;
 	if (id + 1 == data->nb_philos)
@@ -70,7 +70,7 @@ static int	init_philo(t_main *data, t_philo **philos, int id)
 	philos[id]->lfork = &data->forks[philos[id]->lforkid];
 	philos[id]->rfork = &data->forks[philos[id]->rforkid];
 	philos[id]->data = data;
-	return (EXIT_SUCCESS);
+	return (SUCCESS);
 }
 
 static int	fill_structure(t_main *data, int argc, char **argv)
@@ -87,27 +87,27 @@ static int	fill_structure(t_main *data, int argc, char **argv)
 		data->loops = ft_atoi(argv[5]);
 	data->forks = (t_mtx *)malloc(sizeof(t_mtx) * data->nb_philos);
 	if (!data->forks)
-		return (EXIT_FAILURE);
+		return (ERR_FAILURE);
 	data->st_fork = (int *)malloc(sizeof(int) * data->nb_philos);
 	if (!data->st_fork)
-		return (free_struct(data, 0), EXIT_FAILURE);
+		return (free_struct(data, 0), ERR_FAILURE);
 	data->philos = (t_philo **)malloc(sizeof(t_philo *) * data->nb_philos);
 	if (!data->philos)
-		return (free_struct(data, 0), EXIT_FAILURE);
+		return (free_struct(data, 0), ERR_FAILURE);
 	while (++i < data->nb_philos)
-		if (init_philo(data, data->philos, i) == EXIT_FAILURE)
-			return (free_struct(data, i), EXIT_FAILURE);
-	return (EXIT_SUCCESS);
+		if (init_philo(data, data->philos, i) == ERR_FAILURE)
+			return (free_struct(data, i), ERR_FAILURE);
+	return (SUCCESS);
 }
 
 int	parsing(t_main *data, int argc, char **argv)
 {
 	if (!data)
-		return (EXIT_FAILURE);
+		return (ERR_ALLOC);
 	ft_bzero((void *)data, sizeof(t_main));
-	if (read_args(argc, argv) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
-	if (fill_structure(data, argc, argv) == EXIT_FAILURE)
-		return (EXIT_FAILURE + 1);
-	return (EXIT_SUCCESS);
+	if (read_args(argc, argv) == ERR_FAILURE)
+		return (ERR_ARGS);
+	if (fill_structure(data, argc, argv) == ERR_FAILURE)
+		return (ERR_ALLOC);
+	return (SUCCESS);
 }
