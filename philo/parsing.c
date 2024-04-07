@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
-static int	ft_atoi(const char *str)
+int	ft_atoi(const char *str)
 {
 	int	i;
 	int	sign;
@@ -60,7 +60,7 @@ static int	init_philo(t_main *data, t_philo **philos, int id)
 	ft_bzero((void *)philos[id], sizeof(t_philo));
 	philos[id]->thd = (t_thd *)malloc(sizeof(t_thd));
 	if (!philos[id]->thd)
-		return (free(philos[id]), perror("HEY"), EXIT_FAILURE);
+		return (free(philos[id]), EXIT_FAILURE);
 	philos[id]->id = id + 1;
 	philos[id]->lforkid = id;
 	if (id + 1 == data->nb_philos)
@@ -102,6 +102,8 @@ static int	fill_structure(t_main *data, int argc, char **argv)
 
 int	parsing(t_main *data, int argc, char **argv)
 {
+	if (!data)
+		return (EXIT_FAILURE);
 	ft_bzero((void *)data, sizeof(t_main));
 	if (read_args(argc, argv) == EXIT_FAILURE)
 		return (EXIT_FAILURE);

@@ -14,7 +14,7 @@
 
 int	main(int argc, char **argv)
 {
-	int		err;
+	int		ret;
 	t_main	*data;
 
 	data = (t_main *)malloc(sizeof(t_main) * 1);
@@ -22,10 +22,10 @@ int	main(int argc, char **argv)
 		return (print_error("Error\nbad arguments"));
 	else if (parsing(data, argc, argv) == EXIT_FAILURE + 1)
 		return (free(data), print_error("Error\nCouldn't initialize philos"));
-	err = philosophers(data);
-	if (err == EXIT_FAILURE)
+	ret = philosophers(data);
+	if (ret == EXIT_FAILURE)
 		return (free_struct(data, 0), print_error("Error"));
-	else if (err == 2)
+	else if (ret == 2)
 		return (free_struct(data, 0), EXIT_FAILURE);
 	free_struct(data, data->nb_philos);
 	return (EXIT_SUCCESS);

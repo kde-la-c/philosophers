@@ -34,6 +34,8 @@ int	read_args(int argc, char **argv)
 		while (argv[i][j])
 			if (!ft_isdigit(argv[i][j++]))
 				return (EXIT_FAILURE);
+		if (ft_atoi(argv[i]) < 1)
+			return (EXIT_FAILURE);
 		i++;
 	}
 	return (EXIT_SUCCESS);

@@ -21,14 +21,14 @@
 # include <pthread.h>
 # include <errno.h>
 
+# define STATUS		"%i %i %s\n"
+
 # define TAKE_FORK	0
 # define EAT		1
 # define SLEEP		2
 # define THINK		3
 # define DIE		4
 # define FINISH		5
-
-# define STATUS		"%i %i %s\n"
 
 typedef pthread_mutex_t	t_mtx;
 typedef pthread_t		t_thd;
@@ -65,6 +65,7 @@ typedef struct s_philo
 }	t_philo;
 
 /* PARSING */
+int		ft_atoi(const char *str);
 int		parsing(t_main *data, int argc, char **argv);
 int		read_args(int argc, char **argv);
 
