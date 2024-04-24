@@ -25,9 +25,9 @@ int	ft_putendl_fd(char *s, int fd)
 
 int	print_errno(int	retno)
 {
-	if (!retno)
-		ft_putendl_fd("All meals taken!", 1);
-	else if (retno != MSG_DEATH)
+	// if (!retno)
+	// 	ft_putendl_fd("All meals taken!", 1);
+	if (retno != MSG_DEATH)
 		ft_putendl_fd("Error", 2);
 	if (retno == ERR_ALLOC)
 		ft_putendl_fd("Memory allocation problem", 2);

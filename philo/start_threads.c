@@ -70,7 +70,7 @@ int	philosophers(t_main *data)
 	pthread_mutex_lock(&data->start);
 	i = -1;
 	while (++i < data->nb_philos)
-		if (pthread_create(data->philos[i]->thd, NULL, routine,
+		if (pthread_create(data->philos[i]->thd, NULL, &routine,
 				(void *)data->philos[i]))
 			return (ERR_THD_INIT);
 	data->starttime = get_tstamp();

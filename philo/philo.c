@@ -22,7 +22,7 @@ int	main(int argc, char **argv)
 	if (ret)
 		return (print_errno(ret));
 	ret = philosophers(data);
-	print_errno(ret);
+	// print_errno(ret);
 	free_struct(data, data->nb_philos);
 	return (SUCCESS);
 }
