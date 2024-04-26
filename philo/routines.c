@@ -42,8 +42,8 @@ static int	eat(t_philo *phi)
 	print_tstamp(phi, EAT);
 	ft_msleep(phi, phi->data->t_eat);
 	phi->meals++;
-	pthread_mutex_unlock(&phi->data->forks[phi->rforkid]);
-	pthread_mutex_unlock(&phi->data->forks[phi->lforkid]);
+	pthread_mutex_unlock(phi->rfork);
+	pthread_mutex_unlock(phi->lfork);
 	return (SUCCESS);
 }
 

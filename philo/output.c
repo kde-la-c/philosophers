@@ -54,7 +54,5 @@ void	print_tstamp(t_philo *philo, int status)
 		printf(STATUS, now(philo->data), philo->id, "died");
 		return ;
 	}
-	else if (status == FINISH)
-		printf(STATUS, now(philo->data), philo->id, "finished eating");
 	pthread_mutex_unlock(&philo->data->print);
 }

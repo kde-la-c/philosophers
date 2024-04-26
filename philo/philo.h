@@ -27,8 +27,7 @@ typedef enum e_action
 	EAT,
 	SLEEP,
 	THINK,
-	DIE,
-	FINISH
+	DIE
 }	t_action;
 
 typedef enum e_errno
@@ -53,7 +52,6 @@ typedef struct s_main
 	int		nb_philos;
 	t_philo	**philos;
 	t_mtx	*forks;
-	int		*st_fork;
 	int		start;
 	t_mtx	stop;
 	t_mtx	print;
@@ -71,9 +69,7 @@ typedef struct s_philo
 	t_thd	*thd;
 	int		lastmeal;
 	t_mtx	*lfork;
-	int		lforkid;
 	t_mtx	*rfork;
-	int		rforkid;
 	int		meals;
 	t_main	*data;
 }	t_philo;

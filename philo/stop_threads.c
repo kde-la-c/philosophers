@@ -16,8 +16,6 @@ void	free_struct(t_main *data, int i)
 {
 	if (data->forks)
 		free(data->forks);
-	if (data->st_fork)
-		free(data->st_fork);
 	if (data->philos && i)
 	{
 		while (--i >= 0)

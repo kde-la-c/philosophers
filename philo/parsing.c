@@ -62,13 +62,11 @@ static int	init_philo(t_main *data, t_philo **philos, int id)
 	if (!philos[id]->thd)
 		return (free(philos[id]), ERR_FAILURE);
 	philos[id]->id = id + 1;
-	philos[id]->lforkid = id;
+	philos[id]->lfork = &data->forks[id];
 	if (id + 1 == data->nb_philos)
-		philos[id]->rforkid = 0;
+		philos[id]->rfork = &data->forks[0];
 	else
-		philos[id]->rforkid = id + 1;
-	philos[id]->lfork = &data->forks[philos[id]->lforkid];
-	philos[id]->rfork = &data->forks[philos[id]->rforkid];
+		philos[id]->rfork = &data->forks[id + 1];
 	philos[id]->data = data;
 	return (SUCCESS);
 }
@@ -88,9 +86,6 @@ static int	fill_structure(t_main *data, int argc, char **argv)
 	data->forks = (t_mtx *)malloc(sizeof(t_mtx) * data->nb_philos);
 	if (!data->forks)
 		return (ERR_FAILURE);
-	data->st_fork = (int *)malloc(sizeof(int) * data->nb_philos);
-	if (!data->st_fork)
-		return (free_struct(data, 0), ERR_FAILURE);
 	data->philos = (t_philo **)malloc(sizeof(t_philo *) * data->nb_philos);
 	if (!data->philos)
 		return (free_struct(data, 0), ERR_FAILURE);
