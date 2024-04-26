@@ -34,9 +34,11 @@ void	ft_msleep(t_philo *phi, int sleeptime)
 	orig_time = tv.tv_sec * 1000 + tv.tv_usec / 1000;
 	while (get_tstamp() < orig_time + sleeptime)
 	{
-		if ((!phi->meals && now(phi->data) > phi->data->t_death)
-		|| (phi->meals && now(phi->data) > phi->lastmeal + phi->data->t_death)
-		|| phi->data->nb_philos == 1)
+		if ((!phi->meals
+				&& now(phi->data) > phi->data->t_death)
+			|| (phi->meals
+				&& now(phi->data) > phi->lastmeal + phi->data->t_death)
+			|| phi->data->nb_philos == 1)
 		{
 			pthread_mutex_lock(&phi->data->stop);
 			phi->data->dead = phi->id;

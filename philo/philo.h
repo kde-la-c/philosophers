@@ -62,7 +62,7 @@ typedef struct s_main
 	int		t_death;
 	int		loops;
 	int		starttime;
-	int		indead;
+	int		dead;
 }	t_main;
 
 typedef struct s_philo

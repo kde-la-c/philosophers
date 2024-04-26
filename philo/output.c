@@ -23,10 +23,8 @@ int	ft_putendl_fd(char *s, int fd)
 	return (ret);
 }
 
-int	print_errno(int	retno)
+int	print_errno(int retno)
 {
-	// if (!retno)
-	// 	ft_putendl_fd("All meals taken!", 1);
 	if (retno != MSG_DEATH)
 		ft_putendl_fd("Error", 2);
 	if (retno == ERR_ALLOC)

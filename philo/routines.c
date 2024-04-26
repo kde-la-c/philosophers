@@ -14,29 +14,25 @@
 
 static int	take_forks(t_philo *phi, t_mtx *fork1, t_mtx *fork2)
 {
-	// pthread_mutex_lock(fork1);
 	if (pthread_mutex_lock(fork1))
-		return (perror("lock1"), ERR_FAILURE);
+		return (/* perror("lock1"), */ ERR_FAILURE);
 	print_tstamp(phi, TAKE_FORK);
 	if (phi->data->nb_philos == 1)
 		return (ERR_FAILURE);
-	// pthread_mutex_lock(fork2);
 	if (pthread_mutex_lock(fork2))
-		return (pthread_mutex_unlock(fork1), perror("lock2"), ERR_FAILURE);
+		return (pthread_mutex_unlock(fork1), /* perror("lock2"), */ ERR_FAILURE);
 	print_tstamp(phi, TAKE_FORK);
 	return (SUCCESS);
 }
 
 static int	eat(t_philo *phi)
 {
-	int ret;
-	// take forks
+	int	ret;
+
 	if (phi->id % 2)
 		ret = take_forks(phi, phi->lfork, phi->rfork);
 	else
 		ret = take_forks(phi, phi->rfork, phi->lfork);
-	
-	// eat
 	if (ret)
 	{
 		ft_msleep(phi, 1);
@@ -46,8 +42,6 @@ static int	eat(t_philo *phi)
 	print_tstamp(phi, EAT);
 	ft_msleep(phi, phi->data->t_eat);
 	phi->meals++;
-
-	// leave forks
 	pthread_mutex_unlock(&phi->data->forks[phi->rforkid]);
 	pthread_mutex_unlock(&phi->data->forks[phi->lforkid]);
 	return (SUCCESS);
