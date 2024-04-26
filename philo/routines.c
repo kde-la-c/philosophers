@@ -65,20 +65,14 @@ void	*routine(void *data)
 	pthread_mutex_unlock(&philo->data->start);
 	if (philo->id % 2 == 1)
 		usleep(50);
-	while (i++ < (philo->data->loops) || !philo->data->loops)
+	while (1)
 	{
 		j = eat(philo);
 		if (j == ERR_FAILURE)
-		{
-			// dprintf(2, "return\n");
 			return (NULL);
-		}
-		// dprintf(2, "bucle\n");
 		print_tstamp(philo, SLEEP);
 		ft_msleep(philo, philo->data->t_sleep);
 		print_tstamp(philo, THINK);
-		// dprintf(2, "after\n");
 	}
-	// dprintf(2, "return\n");
 	return (NULL);
 }

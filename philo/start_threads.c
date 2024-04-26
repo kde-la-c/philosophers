@@ -38,9 +38,9 @@ static int	everyonesatisfied(t_main *data)
 
 	i = -1;
 	while (++i < data->nb_philos)
-		if (data->philos[i]->meals != data->loops || !data->loops)
+		if (data->philos[i]->meals < data->loops || !data->loops)
 			return (ERR_FAILURE);
-	return (SUCCESS);
+	return (pthread_mutex_lock(&data->print), SUCCESS);
 }
 
 static int	areyouguysok(t_main *data)

@@ -62,7 +62,7 @@ typedef struct s_main
 	int		t_death;
 	int		loops;
 	int		starttime;
-	int		dead;
+	int		indead;
 }	t_main;
 
 typedef struct s_philo
@@ -84,7 +84,7 @@ int		parsing(t_main *data, int argc, char **argv);
 int		read_args(int argc, char **argv);
 
 /* OUTPUT */
-int		print_errno(int	retno);
+int		print_errno(int retno);
 void	print_tstamp(t_philo *philo, int status);
 
 /* CORE */
