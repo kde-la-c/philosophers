@@ -54,7 +54,7 @@ typedef struct s_main
 	t_philo	**philos;
 	t_mtx	*forks;
 	int		*st_fork;
-	t_mtx	start;
+	int		start;
 	t_mtx	stop;
 	t_mtx	print;
 	int		t_eat;

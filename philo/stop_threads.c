@@ -41,8 +41,6 @@ int	dest_mutexes(t_main	*data)
 			return (ERR_FAILURE);
 		i++;
 	}
-	if (pthread_mutex_destroy(&data->start) == ERR_FAILURE)
-		return (ERR_FAILURE);
 	if (pthread_mutex_destroy(&data->stop) == ERR_FAILURE)
 		return (ERR_FAILURE);
 	if (pthread_mutex_destroy(&data->print) == ERR_FAILURE)

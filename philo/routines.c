@@ -15,12 +15,12 @@
 static int	take_forks(t_philo *phi, t_mtx *fork1, t_mtx *fork2)
 {
 	if (pthread_mutex_lock(fork1))
-		return (/* perror("lock1"), */ ERR_FAILURE);
+		return (ERR_FAILURE);
 	print_tstamp(phi, TAKE_FORK);
 	if (phi->data->nb_philos == 1)
 		return (ERR_FAILURE);
 	if (pthread_mutex_lock(fork2))
-		return (pthread_mutex_unlock(fork1), /* perror("lock2"), */ ERR_FAILURE);
+		return (pthread_mutex_unlock(fork1), ERR_FAILURE);
 	print_tstamp(phi, TAKE_FORK);
 	return (SUCCESS);
 }
@@ -55,8 +55,8 @@ void	*routine(void *data)
 
 	i = 0;
 	philo = (t_philo *)data;
-	pthread_mutex_lock(&philo->data->start);
-	pthread_mutex_unlock(&philo->data->start);
+	while (!philo->data->start)
+		usleep(600);
 	if (philo->id % 2 == 1)
 		usleep(50);
 	while (1)

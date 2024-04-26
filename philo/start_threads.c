@@ -23,8 +23,6 @@ static int	init_mutexes(t_main *data)
 			return (ERR_MTX_INIT);
 		i++;
 	}
-	if (pthread_mutex_init(&data->start, NULL))
-		return (ERR_MTX_INIT);
 	if (pthread_mutex_init(&data->stop, NULL))
 		return (ERR_MTX_INIT);
 	if (pthread_mutex_init(&data->print, NULL))
@@ -67,14 +65,13 @@ int	philosophers(t_main *data)
 
 	if (init_mutexes(data))
 		return (ERR_MTX_INIT);
-	pthread_mutex_lock(&data->start);
 	i = -1;
 	while (++i < data->nb_philos)
 		if (pthread_create(data->philos[i]->thd, NULL, &routine,
 				(void *)data->philos[i]))
 			return (ERR_THD_INIT);
 	data->starttime = get_tstamp();
-	pthread_mutex_unlock(&data->start);
+	data->start = 1;
 	i = areyouguysok(data);
 	join_threads(data);
 	dest_mutexes(data);
