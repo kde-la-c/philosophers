@@ -74,25 +74,30 @@ typedef struct s_philo
 	t_main	*data;
 }	t_philo;
 
-/* PARSING */
+/* ===== PARSING ===== */
+
 int		ft_atoi(const char *str);
 int		parsing(t_main *data, int argc, char **argv);
 int		read_args(int argc, char **argv);
 
-/* OUTPUT */
+/* ===== OUTPUT ====== */
+
 int		print_errno(int retno);
 void	print_tstamp(t_philo *philo, int status);
 
-/* CORE */
+/* ====== CORE ======= */
+
 int		philosophers(t_main *data);
 void	*routine(void *philo);
 
-/* DESTROY */
+/* ===== DESTROY ===== */
+
 void	free_struct(t_main *data, int i);
 int		dest_mutexes(t_main	*data);
 int		join_threads(t_main *data);
 
-/* UTILS */
+/* ====== TIME ======= */
+
 int		get_tstamp(void);
 void	ft_msleep(t_philo *philo, int sleeptime);
 int		now(t_main *data);

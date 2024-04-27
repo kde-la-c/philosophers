@@ -15,7 +15,7 @@ NAME_DBG	= dbg
 SRC			= philo.c \
 			input.c \
 			parsing.c \
-			utils.c \
+			time.c \
 			output.c \
 			start_threads.c \
 			stop_threads.c \
