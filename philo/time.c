@@ -32,7 +32,7 @@ void	ft_msleep(t_philo *phi, int sleeptime)
 
 	gettimeofday(&tv, NULL);
 	orig_time = tv.tv_sec * 1000 + tv.tv_usec / 1000;
-	while (get_tstamp() < orig_time + sleeptime)
+	while (get_tstamp() - orig_time < sleeptime)
 	{
 		if ((!phi->meals
 				&& now(phi->data) > phi->data->t_death)

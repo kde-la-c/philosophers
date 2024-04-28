@@ -57,8 +57,8 @@ void	*routine(void *data)
 	philo = (t_philo *)data;
 	while (!philo->data->start)
 		usleep(600);
-	if (philo->id % 2 == 1)
-		usleep(50);
+	if (philo->id % 2)
+		usleep(100);
 	while (1)
 	{
 		j = eat(philo);
