@@ -22,6 +22,8 @@ int	main(int argc, char **argv)
 	if (ret)
 		return (print_errno(ret));
 	ret = philosophers(data);
+	if (ret)
+		return (print_errno(ret));
 	free_struct(data, data->nb_philos);
 	return (SUCCESS);
 }

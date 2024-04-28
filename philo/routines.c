@@ -6,7 +6,7 @@
 /*   By: kde-la-c <kde-la-c@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 12:12:27 by kde-la-c          #+#    #+#             */
-/*   Updated: 2024/01/12 12:12:29 by kde-la-c         ###   ########.fr       */
+/*   Updated: 2024/04/28 02:47:15 by kde-la-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,9 @@ void	*routine(void *data)
 	i = 0;
 	philo = (t_philo *)data;
 	while (!philo->data->start)
-		usleep(600);
-	if (philo->id % 2)
 		usleep(100);
+	if (philo->id % 2)
+		usleep(200);
 	while (1)
 	{
 		j = eat(philo);
