@@ -68,4 +68,4 @@ fclean:		clean
 
 re:			fclean all
 
-.PHONY:		all clean fclean re debug m l
+.PHONY:		all clean fclean re debug m l t
