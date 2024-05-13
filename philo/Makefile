@@ -26,6 +26,9 @@ CC			= gcc
 CFLAGS		= -Wall -Wextra -Werror
 CFLAGS		+= -O2
 # CFLAGS		+= -flto
+# CFLAGS		+= -fsanitize=address
+# CFLAGS		+= -fsanitize=leak
+# CFLAGS		+= -fsanitize=thread
 CFLAGS		+= -pthread
 RM			= rm
 RFLAGS		= -rf
@@ -36,21 +39,6 @@ $(NAME):	$(OBJS) $(INCLUDE)
 			$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 	$(RM) $(RFLAGS) $(OBJS)
 	@echo "\033[0;31m--- RELINK ---\033[0m"
-			@echo "\033[0;32m--- $(NAME) compiled successfully! ---\033[0m"
-
-l:			$(OBJS) $(INCLUDE)
-			$(CC) $(CFLAGS) -g3 -fsanitize=leak $(OBJS) -o $(NAME)
-			$(RM) $(RFLAGS) $(OBJS)
-			@echo "\033[0;32m--- $(NAME) compiled successfully! ---\033[0m"
-
-m:			$(OBJS) $(INCLUDE)
-			$(CC) $(CFLAGS) -g3 -fsanitize=address $(OBJS) -o $(NAME)
-			$(RM) $(RFLAGS) $(OBJS)
-			@echo "\033[0;32m--- $(NAME) compiled successfully! ---\033[0m"
-
-t:			$(OBJS) $(INCLUDE)
-			$(CC) $(CFLAGS) -g3 -fsanitize=thread $(OBJS) -o $(NAME)
-			$(RM) $(RFLAGS) $(OBJS)
 			@echo "\033[0;32m--- $(NAME) compiled successfully! ---\033[0m"
 
 debug:		$(NAME_DBG)
