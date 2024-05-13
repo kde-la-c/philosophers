@@ -49,11 +49,9 @@ static int	eat(t_philo *phi)
 
 void	*routine(void *data)
 {
-	int			i;
 	int			j;
 	t_philo		*philo;
 
-	i = 0;
 	philo = (t_philo *)data;
 	while (!philo->data->start)
 		usleep(100);
